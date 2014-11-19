@@ -76,6 +76,8 @@ class AccountUtils {
 		if (is_array($return) && isset($return["accountNo"]))
 			return $return["accountNo"];
 
+		return false;
+
 	}
 
 	// Returns Email ID from IBAN
@@ -88,6 +90,8 @@ class AccountUtils {
 
 		if (is_array($return) && isset($return["userId"]))
 			return $return["userId"];
+
+		return false;
 
 	}
 }
