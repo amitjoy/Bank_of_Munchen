@@ -2,10 +2,10 @@
 
 class DB {
 	
-	protected $db_name = 'onlinebanking';
-	protected $db_user = 'root';
-	protected $db_pass = '';
-	protected $db_host = 'localhost';
+	private $db_name = 'onlinebanking';
+	private $db_user = 'root';
+	private $db_pass = '';
+	private $db_host = 'localhost';
 
 	private static $instance;
 

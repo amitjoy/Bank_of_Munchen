@@ -29,22 +29,22 @@ if ($function == "transaction") {
 
 	//The Main Validation Begins
 	if (filter_var($emailId, FILTER_VALIDATE_EMAIL) != true) {
-		$error.=" Email Validation Failed ");
+		$error.=" Email Validation Failed ";
 	}
 
-	if (!preg_match("[-+]?([0-9]*.[0-9]+|[0-9]+)", $amount)) {
+	if (!preg_match("/^[0-9]*\.?[0-9]+$/", $amount)) {
 		$error.=" Amount Validation Failed ";
 	}
 
-	if (!preg_match("^\d{14}$", $iban)) {
+	if (!preg_match("/(\d{14})/", $iban)) {
 		$error.=" IBAN Validation Failed ";
 	}
 
-	if (!preg_match("^\d{6}$", $bic)) {
+	if (!preg_match("/(\d{6})/", $bic)) {
 		$error.=" BIC Validation Failed ";
 	}
 
-	if (!preg_match("^\d{15}$", $tan)) {
+	if (!preg_match("/(\d{15})/", $tan)) {
 		$error.=" TAN Validation Failed ";
 	}
 
@@ -120,13 +120,13 @@ if ($function == "transaction") {
 						$updatedBalanceAfterDeduction = bcsub ($balance, $amount, FLOAT_PRECISION);
 
 						//Email id of target user
-						$emailTargetUser = AccountUtils::getEmailFromIBAN($iban)
+						$emailTargetUser = AccountUtils::getEmailFromIBAN($iban);
 
 						$data = array(
 									"iban" => AccountUtils::getIBANFromEmail($emailId),
 									"bic" => $bic,
 									"amount" => $amount,
-									"userId" => $emailTargetUser,
+									"userId" => "'$emailTargetUser'",
 									"date" => "'".date('Y-m-d H:i:s')."'",
 									"closingBalance" => $balanceOfTheTargetUser,
 									"isActive" => $isActive,
