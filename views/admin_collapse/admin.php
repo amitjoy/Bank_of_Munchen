@@ -199,7 +199,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                                     if (is_array($value)) {
                                                         $accountNo = $userTools->getAccountNo($value['emailId']);
                                                         echo "<td class='strong'><i class='fa fa-fw fa-arrow-down text-danger'></i> ".$value['emailId']."</td>";
-                                                        echo "<td class='center'><span class='label label-primary'>".$value['createdDate']."</span></td>";
+                                                        echo "<td class='center'><span class='label label-primary'>".date("d F Y", strtotime($value['createdDate']))."</span></td>";
                                                         echo "<td class='center'>".$accountNo."</td>";
                                                         echo "<td class='center'>".$value['mobileNo']."</td>";
                                                         echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='approveuser.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-success'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
@@ -215,7 +215,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                                         if (!is_array($value)) {
                                                             $accountNo = $userTools->getAccountNo($userApprovalArray['emailId']);
                                                             echo "<td class='strong'><i class='fa fa-fw fa-arrow-down text-danger'></i> ".$userApprovalArray['emailId']."</td>";
-                                                            echo "<td class='center'><span class='label label-primary'>".$userApprovalArray['createdDate']."</span></td>";
+                                                            echo "<td class='center'><span class='label label-primary'>".date("d F Y", strtotime($userApprovalArray['createdDate']))."</span></td>";
                                                             echo "<td class='center'>".$accountNo."</td>";
                                                             echo "<td class='center'>".$userApprovalArray['mobileNo']."</td>";
                                                             echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='approveuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."' class='btn btn-success'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
@@ -261,7 +261,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                                 $active = ($value['isActive'] == 1) ? 'APPROVED' : 'PENDING';
 
                                                 echo "<td class='strong'><i class='fa fa-fw fa-arrow-down text-danger'></i>".$value['userId']."</td>";
-                                                echo "<td class='center'><span class='label label-primary'>".$value['date']."</span></td>";
+                                                echo "<td class='center'><span class='label label-primary'>".date("d F Y", strtotime($value['date']))."</span></td>";
                                                 echo "<td class='center'>".$value['iban']."</td>";
                                                 echo "<td class='center'>".$value['bic']."</td>";
                                                 echo "<td class='center'>&euro; ".$value['amount']."</td>";
@@ -279,7 +279,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                                 $active = ($transactions['isActive'] == 1) ? 'APPROVED' : 'PENDING';
 
                                                 echo "<td class='center'>".$transactions['userId']."</td>";
-                                                echo "<td class='center'><span class='label label-default'>".$transactions['date']."</span></td>";
+                                                echo "<td class='center'><span class='label label-default'>".date("d F Y", strtotime($transactions['date']))."</span></td>";
                                                 echo "<td class='center'>".$transactions['iban']."</td>";
                                                 echo "<td class='center'>".$transactions['bic']."</td>";
                                                 echo "<td class='center'>&euro; ".$transactions['amount']."</td>";

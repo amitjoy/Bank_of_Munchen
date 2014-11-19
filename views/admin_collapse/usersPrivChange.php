@@ -203,7 +203,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                                 $active = ($value['isActive'] == 1) ? 'APPROVED' : 'PENDING';
 
                                                 echo "<td class='strong'><i class='fa fa-fw fa-arrow-down text-danger'></i>".$userArray['firstName']." ".$userArray['lastName']."</td>";
-                                                echo "<td class='center'><span class='label label-primary'>".$value['createdDate']."</span></td>";
+                                                echo "<td class='center'><span class='label label-primary'>".date("d F Y", strtotime($value['createdDate']))."</span></td>";
                                                 echo "<td class='center'>".$value['mobileNo']."</td>";
                                                 echo "<td class='center'>".$value['emailId']."</td>";
                                                 echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='makeAdmin.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-success'><i class='fa fa-check'></i></a></div></td>";
@@ -219,7 +219,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                                 $active = ($userArray['isActive'] == 1) ? 'APPROVED' : 'PENDING';
 
                                                 echo "<td class='center'>".$userArray['firstName']." ".$userArray['lastName']."</td>";
-                                                echo "<td class='center'><span class='label label-default'>".$userArray['createdDate']."</span></td>";
+                                                echo "<td class='center'><span class='label label-default'>".date("d F Y", strtotime($userArray['createdDate']))."</span></td>";
                                                 echo "<td class='center'>".$userArray['mobileNo']."</td>";
                                                 echo "<td class='center'>".$userArray['emailId']."</td>";
                                                 echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='makeAdmin.php?emailId=".$userArray['emailId']."&csrf_token=".$token."' class='btn btn-default'><i class='fa fa-check'></i></a></div></td>";

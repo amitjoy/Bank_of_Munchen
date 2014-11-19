@@ -203,7 +203,7 @@ try
                                             <strong>Savings Account</strong> <br/>
                                             <abbr title="Balance">Balance:</abbr> <?php echo number_format($accountRow->balance, 2);?> &euro;
                                             <br/>
-                                            <abbr title="Join Date">Join Date:</abbr> <?=$userDetails->createdDate?>
+                                            <abbr title="Join Date">Join Date:</abbr> <?=date("d F Y", strtotime($userDetails->createdDate))?>
                                         </address>
                                     </td>
                                     <td class="right">
@@ -274,7 +274,7 @@ try
 													$active = 'REJECTED';
 
                                             echo "<td class='center'>".$value['iban']."</td>";
-                                            echo "<td class='center'><span class='label label-default'>".$value['date']."</span></td>";
+                                            echo "<td class='center'><span class='label label-default'>".date("d F Y", strtotime($value['date']))."</span></td>";
                                             echo "<td class='center'>&euro; ".number_format($value['amount'], 2)."</td>";
                                             echo "<td class='center'>".$active."</td>";
                                             echo "<td class='center'>&euro; ".number_format($value['closingBalance'], 2)."</td>";
@@ -301,7 +301,7 @@ try
 													$active = 'REJECTED';
 
                                                 echo "<td class='center'>".$transactions['iban']."</td>";
-                                                echo "<td class='center'><span class='label label-default'>".$transactions['date']."</span></td>";
+                                                echo "<td class='center'><span class='label label-default'>".date("d F Y", strtotime($transactions['date']))."</span></td>";
                                                 echo "<td class='center'>&euro; ".number_format($transactions['amount'], 2)."</td>";
                                                 echo "<td class='center'>".$active."</td>";
                                                 echo "<td class='center'>&euro; ".number_format($transactions['closingBalance'], 2)."</td>";

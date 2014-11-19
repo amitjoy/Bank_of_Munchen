@@ -169,7 +169,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                             <strong>Savings Account</strong> <br/>
                                             <abbr title="Balance">Balance:</abbr> <?=number_format($accountRow->balance, 2)?> &euro;
                                             <br/>
-                                            <abbr title="Join Date">Join Date:</abbr> <?=$row->createdDate?>
+                                            <abbr title="Join Date">Join Date:</abbr> <?=date("d F Y", strtotime($row->createdDate))?>
                                         </address>
                                     </td>
                                     <td class="right">
