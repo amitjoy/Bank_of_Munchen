@@ -32,19 +32,19 @@ if ($function == "transaction") {
 		$error.=" Email Validation Failed ");
 	}
 
-	if (filter_var($amount, FILTER_VALIDATE_FLOAT) != true) {
+	if (!preg_match("[-+]?([0-9]*.[0-9]+|[0-9]+)", $amount)) {
 		$error.=" Amount Validation Failed ";
 	}
 
-	if (filter_var($iban, FILTER_VALIDATE_INT) != true) {
+	if (!preg_match("^\d{14}$", $iban)) {
 		$error.=" IBAN Validation Failed ";
 	}
 
-	if (filter_var($bic, FILTER_VALIDATE_INT) != true) {
+	if (!preg_match("^\d{6}$", $bic)) {
 		$error.=" BIC Validation Failed ";
 	}
 
-	if (filter_var($tan, FILTER_VALIDATE_INT) != true) {
+	if (!preg_match("^\d{15}$", $tan)) {
 		$error.=" TAN Validation Failed ";
 	}
 
@@ -82,7 +82,8 @@ if ($function == "transaction") {
 			"userId" => "'$emailId'",
 			"date" => "'".date('Y-m-d H:i:s')."'",
 			"closingBalance" => $balance,
-			"isActive" => $isActive
+			"isActive" => $isActive,
+			"type" => "DEBIT"
 		);
 	// Check if the user has a transaction that is not yet approved
 	$noOfUnapprovedTransactionsArray = $db->select("TRANSACTIONS", "userId = '$userId' AND isActive = 0");
@@ -102,19 +103,38 @@ if ($function == "transaction") {
 			//Check TAN Validity
 			if (AccountUtils::checkTANValidity($emailId, $tan)) {
 
-				// Insert the data in the TRANSACTION TABLE
-				$db->insert($data, "TRANSACTIONS");
-
 				// If approval is not required, directly update the balance
 				if ($isActive == 1) {
 
 					//Update the balance
-					$updatedBalanceAfterDeduction = bcsub ($balance, $amount, FLOAT_PRECISION);
+					$updatedBalanceAfterDeduction = 0;
 
 					//Update the balance of the target user if the target user is already present in the same bank
 					$updatedBalanceAfterAddition = 0;
 
 					if ($balanceOfTheTargetUser != false) {
+
+						// Insert the data in the TRANSACTION TABLE
+						$db->insert($data, "TRANSACTIONS");
+
+						$updatedBalanceAfterDeduction = bcsub ($balance, $amount, FLOAT_PRECISION);
+
+						//Email id of target user
+						$emailTargetUser = AccountUtils::getEmailFromIBAN($iban)
+
+						$data = array(
+									"iban" => AccountUtils::getIBANFromEmail($emailId),
+									"bic" => $bic,
+									"amount" => $amount,
+									"userId" => $emailTargetUser,
+									"date" => "'".date('Y-m-d H:i:s')."'",
+									"closingBalance" => $balanceOfTheTargetUser,
+									"isActive" => $isActive,
+									"type" => "CREDIT"
+								);
+
+						// Insert the credit data in the TRANSACTION TABLE
+						$db->insert($data, "TRANSACTIONS");
 						
 						$updatedBalanceAfterAddition = bcadd($balanceOfTheTargetUser, $amount, FLOAT_PRECISION);
 
@@ -123,19 +143,23 @@ if ($function == "transaction") {
 						);
 
 						$db->update ($dataTargetUser, "ACCOUNTS", "accountNo = '$iban'");
-					}
 
-					$data = array (
+						$data = array (
 							"balance" => $updatedBalanceAfterDeduction
 						);
 
-					$db->update ($data, "ACCOUNTS", "userId = '$emailId'");
+						$db->update ($data, "ACCOUNTS", "userId = '$emailId'");
 
-					$data = array (
-							"isActive" => 0
-						);
+						$data = array (
+								"isActive" => 0
+							);
 
-					$db->update ($data, "TANS", "no = '$tan'");
+						$db->update ($data, "TANS", "no = '$tan'");
+					}
+					else {
+						echo "Invalid Recepient";
+						return;
+					}
 
 					//send transaction confirmation email to the user
 				    $message = Swift_Message::newInstance()

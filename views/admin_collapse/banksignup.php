@@ -51,7 +51,7 @@ if(isset($_POST['submit_form'])) {
         <?php
     }
 
-    if (filter_var($mobileNo, FILTER_VALIDATE_INT) != true) {
+    if (!preg_match("^\d{11}$", $mobileNo)) {
         $success = false;
         ?>
         <script>

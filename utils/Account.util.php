@@ -64,6 +64,32 @@ class AccountUtils {
 		else
 			return true;
 	} 
+
+	// Returns IBAN from Email ID
+	public static function getIBANFromEmail ($email) {
+
+		$db = DB::getInstance();
+		$db->connect();
+
+		$return = $db->select("ACCOUNTS", "userId = '$email'");
+
+		if (is_array($return) && isset($return["accountNo"]))
+			return $return["accountNo"];
+
+	}
+
+	// Returns Email ID from IBAN
+	public static function getEmailFromIBAN ($iban) {
+
+		$db = DB::getInstance();
+		$db->connect();
+
+		$return = $db->select("ACCOUNTS", "accountNo = '$iban'");
+
+		if (is_array($return) && isset($return["userId"]))
+			return $return["userId"];
+
+	}
 }
 
 ?>
