@@ -173,7 +173,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                         </address>
                                     </td>
                                     <td class="right">
-                                        <p class="lead">User information</p>
+                                        <p class="lead">User Information</p>
                                         <h2><?php echo $row->firstName. " " . $row->lastName?></h2>
                                         <address class="margin-none">
                                             <strong></strong>
