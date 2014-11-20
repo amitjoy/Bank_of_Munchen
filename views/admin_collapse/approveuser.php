@@ -23,9 +23,14 @@ try {
   NoCSRF::check( 'csrf_token', $_GET, true, 60*10, false );
 
   $emailToUpdate = Validation::xss_clean(DB::makeSafe ($_GET["emailId"]));
+  $initialAmount = Validation::xss_clean(DB::makeSafe ($_GET["initial_amount"]));
 
   if (filter_var($emailToUpdate, FILTER_VALIDATE_EMAIL) != true) {
     header ("Location: error.php?message=Email Validation Failed");
+  }
+
+  if (!preg_match("/(\d+)/", $initialAmount)) {
+    header ("Location: error.php?message=Initial Amount Validation Failed");
   }
 
   $tanNos = $db->select("TANS", "userId = '$emailToUpdate'");
@@ -88,6 +93,13 @@ try {
 
     // Make the user active
     $db->update ($updateData, "USERS", "emailId = '$emailToUpdate'");
+
+    // Update the initial balance
+    $updateData = array (
+      "balance" => $initialAmount
+    );
+
+    $db->update ($updateData, "ACCOUNTS", "userId = $emailToUpdate");
 
     //send TAN email to the user 
       $message = Swift_Message::newInstance()
