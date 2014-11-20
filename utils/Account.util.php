@@ -1,5 +1,6 @@
 <?php
 require_once "../../classes/DB.class.php";
+require_once '../../libs/aes-sec/AES.php';
 
 class AccountUtils {
 	// Furnction used to check balance of the
@@ -49,7 +50,7 @@ class AccountUtils {
 
 	// Used to check whether the user has right to 
 	// access the tan provided for the transaction
-	public static function checkTANValidity ($emailId, $tanNo) {
+	public static function checkTANValidity_old ($emailId, $tanNo) {
 
 		$db = DB::getInstance();
 		$db->connect();
@@ -64,6 +65,36 @@ class AccountUtils {
 		else
 			return true;
 	} 
+
+	// Used to check whether the user has right to 
+	// access the tan provided for the transaction
+	public static function checkTANValidity ($emailId, $tanNo) {
+		
+		$imputText = $tanNo;
+		$imputKey = $emailId;
+		$blockSize = 256;
+
+		$aes = new AES($imputText, $imputKey, $blockSize);
+
+		$dec = $aes->decrypt();
+
+		if (is_prime(bcsub (num ($emailId), $dec)))
+			return true;
+
+		return false;
+	}
+
+	private static function num($text)
+    {
+	    $num = null;
+
+	    for ($i = 0; $i < strlen($text); $i++)
+	    {
+	    	$num =$num.ord($text[$i]);
+	    }
+
+	    return ($num);
+    }
 
 	// Returns IBAN from Email ID
 	public static function getIBANFromEmail ($email) {
@@ -94,6 +125,22 @@ class AccountUtils {
 		return false;
 
 	}
+
+	private static function is_prime($number){
+			$limit = round(bcsqrt($number));
+			
+			$counter = 2;
+
+			while ($counter <= $limit){
+
+				if (bcmod($number, $counter) == 0){
+					return true;
+				}
+
+				$counter ++;
+			}
+			return false;
+		}
 }
 
 ?>

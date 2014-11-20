@@ -2,6 +2,8 @@
 
 require_once "RandomAccNoGenerator.util.php";
 require_once "../../classes/DB.class.php";
+require_once '../../libs/aes-sec/AES.php';
+
 ini_set('precision', 17);
 
 class Generators {
@@ -52,7 +54,7 @@ class Generators {
 	/**
 	* Generate Unique TAN No to be stored in the DB
 	*/
-	private static function generateTAN () {
+	private static function generateTAN_old () {
 
 		$db = DB::getInstance();
 		$db->connect();
@@ -73,7 +75,7 @@ class Generators {
 		return $randomNumber; 
 	}
 
-	public static function generateTANs ($limit) {
+	public static function generateTANs_old ($limit) {
 
 		$tanArray = array();
 
@@ -82,13 +84,77 @@ class Generators {
 		}
 
 		return $tanArray;
+	}
+
+	private static function generateTAN ($key) {
+
+		$imputText = bcadd (num ($key), randomPrimeNumber());
+		$imputKey = $key;
+		$blockSize = 256;
+
+		$aes = new AES($imputText, $imputKey, $blockSize);
+
+		$enc = $aes->encrypt();
+	}
+
+	private static function randomPrimeNumber () {
+
+		$start = rand ( 12345 , 999999999 );
+
+		for ($i = $start; $i < 999999999 ; $i++) { 
+
+			if (is_prime($i)) {
+				return $i;
+			}
+		}
+
+		return false;
 
 	}
+
+
+	private static function is_prime($number){
+
+		$limit = round(bcsqrt($number));
+		
+		$counter = 2;
+
+		while ($counter <= $limit){
+
+			if (bcmod($number, $counter) == 0){
+				return true;
+			}
+
+			$counter ++;
+		}
+		return false;
+	}
+
+	public static function generateTANs ($emailId, $limit) {
+		$tanArray = array();
+
+		for ($i = 0; $i < $limit; $i++) { 
+			array_push($tanArray, self::generateTAN($emailId));
+		}
+
+		return $tanArray;
+	}
+
+	private static function num($text)
+    {
+	    $num = null;
+
+	    for ($i = 0; $i < strlen($text); $i++)
+	    {
+	    	$num =$num.ord($text[$i]);
+	    }
+	    return ($num);
+    }
 
 	/**
 	* Used to generate transaction ids
 	*/
-	public static function generateTAN_Old ($limit) {
+	public static function generateTAN_Old_old ($limit) {
 
 		$db = DB::getInstance();
 		$db->connect();

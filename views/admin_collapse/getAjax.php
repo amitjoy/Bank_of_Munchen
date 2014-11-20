@@ -44,9 +44,9 @@ if ($function == "transaction") {
 		$error.=" BIC Validation Failed ";
 	}
 
-	if (!preg_match("/(\d{15})/", $tan)) {
+	/*if (!preg_match("/(\d{15})/", $tan)) {
 		$error.=" TAN Validation Failed ";
-	}
+	}*/
 
 	if ($error != "") {
 		echo $error;

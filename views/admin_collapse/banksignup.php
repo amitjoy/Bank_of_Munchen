@@ -134,7 +134,7 @@ if(isset($_POST['submit_form'])) {
         $newAccount->save(true);
 
         //Generate TAN and for this user's future USE
-        $TANNos = Generators::generateTANs (NO_OF_TAN_TO_GENERATE);
+        /*$TANNos = Generators::generateTANs (NO_OF_TAN_TO_GENERATE);
 
         foreach ($TANNos as $key => $value) {
             $tempArray = array();
@@ -146,7 +146,7 @@ if(isset($_POST['submit_form'])) {
             $db->insert($tempArray, "TANS");
 
             unset($tempArray);
-        }
+        }*/
 
         // send the mail to the email
         $message = Swift_Message::newInstance()

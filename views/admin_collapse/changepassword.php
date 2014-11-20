@@ -20,18 +20,33 @@ try {
         header ("Location: error.php?message=Email Validation Failed");
     }
 
-    $logFileForTheUser = LOCATION_BATCH_LOG_DIR ."". $emailId;
-
-    $fileExists = file_exists($logFileForTheUser);
-
-    $content = "";
-
-    if ($fileExists == 1) {
-        $fp = fopen($logFileForTheUser, 'r');
-        $content .= fread($fp, 30000); 
-    }
-
     $row = mysql_fetch_object(mysql_query("SELECT * FROM USERS WHERE emailId = '$emailId' AND isActive = 1"));
+
+    if (isset($_POST['changepasswordsubmit'])) {
+
+        $currentpassword = Validation::xss_clean(DB::makeSafe($_POST["currentpassword"]));
+        $newpassword = Validation::xss_clean(DB::makeSafe($_POST["newpassword"]));
+        $confirmnewpassword = Validation::xss_clean(DB::makeSafe($_POST["confirmnewpassword"]));
+
+        // Check if current password is correct
+        $userTools = new UserTools();
+
+        if (!$userTools->login($emailId, $currentpassword)){ 
+            header ("Location: error.php?message=Current Password Wrong");
+            return;
+        }
+
+        if ($newpassword != $confirmnewpassword) {
+            header ("Location: error.php?message=Confirm Password Wrong");
+            return;
+        }
+
+        $updateDate = array(
+                "password" => $newpassword
+            );
+
+        $db->update ($updateDate. "ACCOUNTS", "userId = $emailId");
+    }
 }
 catch (Exception $e) {
     header ("Location: error.php");
@@ -70,6 +85,8 @@ $token = NoCSRF::generate( 'csrf_token' );
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
     <script src="../assets/components/library/jquery/jquery.min.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
+    <script src="../assets/components/library/js/changePasswordForm.validation.js"></script>
+    <script src="../assets/components/library/rollups/sha512.js"></script>
     <script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
     <script src="../assets/components/library/modernizr/modernizr.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
     <script src="../assets/components/plugins/less-js/less.min.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
@@ -170,6 +187,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                 <div class="innerAll shop-client-products cart invoice">
                    
                     <div class="box-generic">
+                        <form role="form" action="changepassword.php?csrf_token=<?php echo $token;?>" method="POST" id="changePasswordForm" onsubmit="return validateChangePasswordForm()">
                         <table class="table table-invoice">
                             <tbody>
 								<tr>
@@ -180,7 +198,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                         Current Password<span style="color:red;">*</span> :- 
                                     </td>
                                     <td>
-										<input type="text" class="form-control" id="currentpassword" placeholder="Current Password" name="currentpassword" style="width: 30%;">
+										<input type="password" class="form-control" id="currentpassword" placeholder="Current Password" name="currentpassword" style="width: 30%;">
 									</td>                                    
                                 </tr>
 								<tr>
@@ -188,7 +206,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                         New Password<span style="color:red;">*</span> :- 
                                     </td>
                                     <td>
-										<input type="text" class="form-control" id="newpassword" placeholder="New Password" name="newpassword" style="width: 30%;">
+										<input type="password" class="form-control" id="newpassword" placeholder="New Password" name="newpassword" style="width: 30%;">
 									</td>  
                                 </tr>
 								<tr>
@@ -196,19 +214,20 @@ $token = NoCSRF::generate( 'csrf_token' );
                                         Confirm New Password<span style="color:red;">*</span> :- 
                                     </td>
                                     <td>
-										<input type="text" class="form-control" id="confirmnewpassword" placeholder="New Password" name="confirmnewpassword" style="width: 30%;">
+										<input type="password" class="form-control" id="confirmnewpassword" placeholder="New Password" name="confirmnewpassword" style="width: 30%;">
 									</td>  
                                 </tr>
 								<tr>
                                     <td>
-                                        <button class="btn btn-primary btn-stroke" id="changepasswordsubmit">Submit</button>
+                                        <button type="submit" class="btn btn-primary btn-stroke" id="changepasswordsubmit">Submit</button>
                                     </td>
                                     <td>
-										<button class="btn btn-primary btn-stroke" id="changepasswordrest">Reset</button>
+										<button type="reset" class="btn btn-primary btn-stroke" id="changepasswordrest">Reset</button>
 									</td>  
                                 </tr>
                             </tbody>
                         </table>
+                    </form>
                     </div>
                     
                     <div class="separator bottom hidden-print"></div>

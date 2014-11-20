@@ -2,6 +2,7 @@
 require_once '../../includes/global.inc.php';
 require_once '../../includes/mail.inc.php';
 require_once '../../libs/pdf/mpdf.php';
+require_once '../../utils/Generators.util.php';
 
 
 //check to see if they're logged in
@@ -33,18 +34,24 @@ try {
     header ("Location: error.php?message=Initial Amount Validation Failed");
   }
 
-  $tanNos = $db->select("TANS", "userId = '$emailToUpdate'");
+  //$tanNos = $db->select("TANS", "userId = '$emailToUpdate'");
+  $tanNos = Generators::generateTANs ($emailToUpdate, 100);
 
   $tanEmailMessage = "";
 
-  // Email message to list all the tans for the user
-  foreach ($tanNos as $key => $value) {
-    foreach ($value as $k => $v) {
-      if ($k == "no")
-        $tanEmailMessage .= $k. ":" .$v . "<br/>";
-    }
+  for ($i=0; $i < count($tanNos); $i++) { 
+    $tanEmailMessage .= $i . ":" . $tanNos[$i] . "<br/>";
     $tanEmailMessage .= "<br/><hr>";
   }
+
+  // Email message to list all the tans for the user
+  // foreach ($tanNos as $key => $value) {
+  //   foreach ($value as $k => $v) {
+  //     // if ($k == "no")
+  //       $tanEmailMessage .= $k. ":" .$v . "<br/>";
+  //   }
+  //   $tanEmailMessage .= "<br/><hr>";
+  // }
 
   $mpdf=new mPDF('c','A4','','',32,25,27,25,16,13); 
 
