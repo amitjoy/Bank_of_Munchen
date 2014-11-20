@@ -76,7 +76,8 @@ if ($function == "transaction") {
 
 
 	$data = array(
-			"iban" => $iban,
+			"senderIban" => AccountUtils::getIBANFromEmail($emailId),
+			"receiverIban" => $iban,
 			"bic" => $bic,
 			"amount" => $amount,
 			"userId" => "'$emailId'",
@@ -129,7 +130,8 @@ if ($function == "transaction") {
 						$emailTargetUser = AccountUtils::getEmailFromIBAN($iban);
 
 						$data = array(
-									"iban" => AccountUtils::getIBANFromEmail($emailId),
+									"senderIban" => AccountUtils::getIBANFromEmail($emailId),
+									"receiverIban" => $iban,
 									"bic" => $bic,
 									"amount" => $amount,
 									"userId" => "'$emailTargetUser'",
