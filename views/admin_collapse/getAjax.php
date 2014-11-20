@@ -114,6 +114,12 @@ if ($function == "transaction") {
 
 					if ($balanceOfTheTargetUser != false) {
 
+						// Check if the user is sending money to own account
+						if ($iban == AccountUtils::getEmailFromIBAN ($emailId)) {
+							echo "You can't tranfer money to your own account";
+							return;
+						}
+
 						// Insert the data in the TRANSACTION TABLE
 						$db->insert($data, "TRANSACTIONS");
 
