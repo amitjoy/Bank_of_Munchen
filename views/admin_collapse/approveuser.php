@@ -15,7 +15,7 @@ if (filter_var($sessionEmailId, FILTER_VALIDATE_EMAIL) != true) {
     header ("Location: error.php?message=Email Validation Failed");
 }
 
-if (!$userTools->isAdmin($sessionEmailId) {
+if (!$userTools->isAdmin($sessionEmailId)) {
     header("Location: banklogin.php");
 }
 
