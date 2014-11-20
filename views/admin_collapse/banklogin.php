@@ -1,9 +1,12 @@
 <?php
 require_once '../../includes/global.inc.php';
+require_once '../../libs/securimage/securimage.php';
 
 $error = "";
 $username = "";
 $password = "";
+
+$securimage = new Securimage();
 
 if(isset($_SESSION['logged_in'])) {
     header("Location: accountoverview.php");
@@ -13,6 +16,16 @@ $token = NoCSRF::generate( 'csrf_token' );
 
 //check to see if they've submitted the login form
 if(isset($_POST['submit_logon'])) { 
+
+    //CAPTCHA Validation
+    if (!$securimage->check($_POST['captcha_code'])) {
+        ?>
+        <script>
+          alert("Captcha Validation Failed");
+        </script>
+        <?php
+        exit;
+    }
 
     $username = Validation::xss_clean(DB::makeSafe($_POST['email']));
     $password = Validation::xss_clean(DB::makeSafe($_POST['password']));
@@ -124,6 +137,14 @@ if($error != "")
                                                         <div class="form-group">
                                                             <label for="exampleInputPassword1">Password</label>
                                                             <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <img id="captcha" src="/securimage/securimage_show.php" alt="CAPTCHA Image" />
+                                                            <object type="application/x-shockwave-flash" data="/securimage/securimage_play.swf?bgcol=%23ffffff&amp;icon_file=%2Fsecurimage%2Fimages%2Faudio_icon.png&amp;audio_file=%2Fsecurimage%2Fsecurimage_play.php" height="32" width="32"><param name="movie" value="/securimage/securimage_play.swf?bgcol=%23ffffff&amp;icon_file=%2Fsecurimage%2Fimages%2Faudio_icon.png&amp;audio_file=%2Fsecurimage%2Fsecurimage_play.php"></object>
+                                                            <a href="#" onclick="document.getElementById('captcha').src = '/securimage/securimage_show.php?' + Math.random(); return false"><img height="32" width="32" src="/securimage/images/refresh.png" alt="Refresh Image" onclick="this.blur()" border="0"></a>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="captcha_code" id="captcha_code" size="10" maxlength="6" placeholder="Captcha Code"/>
                                                         </div>
                                                         <button type="submit" class="btn btn-primary btn-block" name="submit_logon">Login</button>
                                                         <!--div class="checkbox">
