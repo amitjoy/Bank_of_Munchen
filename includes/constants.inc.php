@@ -1,6 +1,6 @@
 <?php
 
-define("INITIAL_BALANCE", 100000);
+define("INITIAL_BALANCE", 0);
 define("NO_OF_TAN_TO_GENERATE", 100);
 define("LOCATION_OF_UPLOAD_DIR", "../../uploads/");
 define("C_EXECUTABLE_NAME", "/home/samurai/Downloads/securecoding/BTCApiop");

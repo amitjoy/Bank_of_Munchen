@@ -103,9 +103,6 @@ try {
                 ;
 
       $mailer->send($message);
-
-      $mpdf->Output($filename ,'I');
-      exit;
 }
 catch (Exception $e){
   header("Location: error.php");
