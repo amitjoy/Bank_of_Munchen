@@ -72,6 +72,7 @@ $token = NoCSRF::generate( 'csrf_token' );
     <script src="../assets/components/plugins/less-js/less.min.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
     <script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.0.3-rc2"></script>
     <script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
+	<script src="../assets/components/library/js/admin.js"></script>
     <script>
     if ( /*@cc_on!@*/ false && document.documentMode === 10)
     {
@@ -203,7 +204,8 @@ $token = NoCSRF::generate( 'csrf_token' );
                                                         echo "<td class='center'><span class='label label-primary'>".date("d F Y", strtotime($value['createdDate']))."</span></td>";
                                                         echo "<td class='center'>".$accountNo."</td>";
                                                         echo "<td class='center'>".$value['mobileNo']."</td>";
-                                                        echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='approveuser.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-success'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
+														echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='#' class='btn btn-success' url='approveuser.php?emailId=".$value['emailId']."&csrf_token=".$token."'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
+                                                        //echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='approveuser.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-success'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
                                                         echo "</tr>";
                                                         }
                                                      }
@@ -219,7 +221,8 @@ $token = NoCSRF::generate( 'csrf_token' );
                                                             echo "<td class='center'><span class='label label-primary'>".date("d F Y", strtotime($userApprovalArray['createdDate']))."</span></td>";
                                                             echo "<td class='center'>".$accountNo."</td>";
                                                             echo "<td class='center'>".$userApprovalArray['mobileNo']."</td>";
-                                                            echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='approveuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."' class='btn btn-success'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
+															echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a class='btn btn-success' ulr='approveuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
+                                                            //echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='approveuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."' class='btn btn-success'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
                                                             echo "</tr>";
                                                          }
                                                 }   
@@ -301,9 +304,53 @@ $token = NoCSRF::generate( 'csrf_token' );
                     
                 </div>
             </div>
-			
+			<!--Modal Body Begin-->
+					<div class="widget-body">
+						<!-- Form Modal 1 -->
+						<a href="#modal-login" data-toggle="modal" class="btn btn-primary" id="initialiseamountmodal" style="display:none;"><i class="fa fa-fw fa-user"></i>Button</a>
+						<!-- Modal -->
+						<div class="modal fade" id="modal-login">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<!-- Modal heading -->
+									<div class="modal-header">
+										<button style="display:none;" type="button" class="close" data-dismiss="modal" aria-hidden="true" id="closeforgotpasswordmodal">&times;</button>
+										<h3 class="modal-title">Please enter amount to be credited during account opening</h3>
+									</div>
+									<!-- // Modal heading END -->
+									<!-- Modal body -->
+									<div class="modal-body">
+										<div class="innerAll">
+											<div class="innerLR">
+												<form class="form-horizontal" role="" id="modalInitilaiseAmountForm">
+													
+													
+													<div class="form-group">
+														<label for="inputPassword3" class="col-sm-2 control-label">Amount</label>
+														<div class="col-sm-10">
+															<input type="text" class="form-control" id="initaliseamount" placeholder="Amount">
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<div class="col-sm-offset-2 col-sm-10">
+															<a href="#" id="initaliseamountsubmit" class="btn btn-primary">Approve</a>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+									<!-- // Modal body END -->
+								</div>
+							</div>
+						</div>
+						<!-- // Modal END -->
+			</div>
+			<!-- Modal Body End-->
 			
         </div>
+		
         <!-- // Content END -->
         <div class="clearfix"></div>
         <!-- // Sidebar menu & content wrapper END -->

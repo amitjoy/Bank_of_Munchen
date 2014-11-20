@@ -292,15 +292,15 @@ $(function()
 				data: "function=transaction&iban="+iban+"&bic="+bic+"&tan="+tan+"&amount="+amount+"&emailId="+emailId+"&password="+tranPasswordhash,
 				success: function(data){
 							$("#closepasswordmodal").click();
-							console.log("Success");
-							console.log(data);
+							//console.log("Success");
+							//console.log(data);
 							alert(data);
 							location.reload(true);
-							console.log("getAjax.php?function=transaction&iban="+iban+"&bic="+bic+"&tan="+tan+"&amount="+amount+"&emailId="+emailId+"&password="+tranPasswordhash);
+							//console.log("getAjax.php?function=transaction&iban="+iban+"&bic="+bic+"&tan="+tan+"&amount="+amount+"&emailId="+emailId+"&password="+tranPasswordhash);
 						},
 				error: function(){
-							console.log("failed");
-							console.log("getAjax.php?function=transaction&iban="+iban+"&bic="+bic+"&tan="+tan+"&amount="+amount+"&emailId="+emailId+"&password="+tranPasswordhash);
+							//console.log("failed");
+							//console.log("getAjax.php?function=transaction&iban="+iban+"&bic="+bic+"&tan="+tan+"&amount="+amount+"&emailId="+emailId+"&password="+tranPasswordhash);
 							$("#closepasswordmodal").click();
 							alert("There was an error, please try again!");
 						}
