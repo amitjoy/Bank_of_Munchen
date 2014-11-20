@@ -165,7 +165,8 @@ $token = NoCSRF::generate( 'csrf_token' );
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu pull-right">
-                            
+                            <li><a href="changepassword.php?csrf_token=<?php echo $token; ?>" class="glyphicons edit no-ajaxify"><i></i>Change Password</a>
+                            </li>
                             <li><a href="banklogout.php?lang=en&csrf_token=<?php echo $token; ?>" class="glyphicons lock no-ajaxify"><i></i>Logout</a>
                             </li>
                         </ul>

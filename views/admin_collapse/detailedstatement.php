@@ -177,7 +177,8 @@ try
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu pull-right">
-                            
+                            <li><a href="changepassword.php?csrf_token=<?php echo $token; ?>" class="glyphicons edit no-ajaxify"><i></i>Change Password</a>
+                            </li>
                             <li><a href="banklogout.php?csrf_token=<?php echo $token; ?>" class="glyphicons lock no-ajaxify"><i></i>Logout</a>
                             </li>
                         </ul>
@@ -246,7 +247,9 @@ try
                         <thead>
                             <tr>
                                 <th style="width: 1%;" class="center">No.</th>
-                                <th class='center'>IBAN No</th>
+                                <th class='center'>Sender IBAN No</th>
+								<th class='center'>Destination IBAN No</th>
+								<th class='center'>Credit/Debit</th>
                                 <th class='center'>Date</th>
                                 <th class='center'>Amount</th>
                                 <th class='center'>Status</th>
@@ -273,7 +276,9 @@ try
 												else 
 													$active = 'REJECTED';
 
-                                            echo "<td class='center'>".$value['iban']."</td>";
+                                            echo "<td class='center'>".$value['senderIban']."</td>";
+											echo "<td class='center'>".$value['receiverIban']."</td>";
+											echo "<td class='center'>".$value['type']."</td>";
                                             echo "<td class='center'><span class='label label-default'>".date("d F Y", strtotime($value['date']))."</span></td>";
                                             echo "<td class='center'>&euro; ".number_format($value['amount'], 2)."</td>";
                                             echo "<td class='center'>".$active."</td>";
@@ -300,7 +305,9 @@ try
 												else 
 													$active = 'REJECTED';
 
-                                                echo "<td class='center'>".$transactions['iban']."</td>";
+                                                echo "<td class='center'>".$transactions['senderIban']."</td>";
+												echo "<td class='center'>".$transactions['receiverIban']."</td>";
+												echo "<td class='center'>".$transactions['type']."</td>";
                                                 echo "<td class='center'><span class='label label-default'>".date("d F Y", strtotime($transactions['date']))."</span></td>";
                                                 echo "<td class='center'>&euro; ".number_format($transactions['amount'], 2)."</td>";
                                                 echo "<td class='center'>".$active."</td>";

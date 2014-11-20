@@ -161,6 +161,12 @@ if($error != "")
                                                     <div class="separator"></div>
                                                 </div>
                                             </div>
+											<div class="col-sm-4 col-sm-offset-4 text-center">
+                                                <div class="innerAll">
+                                                    <button  id="forgotpasswordbutton" class="btn btn-warning">Forgot Password <i class="fa fa-pencil"></i> </button>
+                                                    <div class="separator"></div>
+                                                </div>
+                                            </div>
                                             <div class="clearfix"></div>
                                         </div>
                                     </div>
@@ -173,6 +179,50 @@ if($error != "")
                         <!-- // END col-table -->
                     </div>
                     <!-- // END col-separator.box -->
+					<!--Modal Body Begin-->
+					<div class="widget-body">
+						<!-- Form Modal 1 -->
+						<a href="#modal-login" data-toggle="modal" class="btn btn-primary" id="forgotpasswordmodal" style="display:none;"><i class="fa fa-fw fa-user"></i>Button</a>
+						<!-- Modal -->
+						<div class="modal fade" id="modal-login">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<!-- Modal heading -->
+									<div class="modal-header">
+										<button  type="button" class="close" data-dismiss="modal" aria-hidden="true" id="closeforgotpasswordmodal">&times;</button>
+										<h3 class="modal-title">Please enter the email address to send the new password</h3>
+									</div>
+									<!-- // Modal heading END -->
+									<!-- Modal body -->
+									<div class="modal-body">
+										<div class="innerAll">
+											<div class="innerLR">
+												<form class="form-horizontal" role="" id="modalForgotPasswordForm">
+													
+													
+													<div class="form-group">
+														<label for="inputPassword3" class="col-sm-2 control-label">Email</label>
+														<div class="col-sm-10">
+															<input type="text" class="form-control" id="passwordemailid" placeholder="Email@address.com">
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<div class="col-sm-offset-2 col-sm-10">
+															<button id="forgotpasswordsubmit" class="btn btn-primary">Send</button>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+									<!-- // Modal body END -->
+								</div>
+							</div>
+						</div>
+						<!-- // Modal END -->
+			</div>
+			<!-- Modal Body End-->
                 </div>
                 <!-- // END row-app -->
                 <!-- Global -->

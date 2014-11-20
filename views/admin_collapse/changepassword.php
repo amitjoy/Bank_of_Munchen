@@ -8,7 +8,7 @@ if(!isset($_SESSION['logged_in'])) {
 }
 
 try {
-    // Run CSRF check, on POST data, in exception mode, for 10 minutes, in one-time mode.
+
     NoCSRF::check( 'csrf_token', $_GET, true, 60*10, false );
 
     //get the user object from the session
@@ -16,16 +16,25 @@ try {
 
     $emailId = Validation::xss_clean(DB::makeSafe($_SESSION["emailId"]));
 
-
     if (filter_var($emailId, FILTER_VALIDATE_EMAIL) != true) {
         header ("Location: error.php?message=Email Validation Failed");
     }
 
+    $logFileForTheUser = LOCATION_BATCH_LOG_DIR ."". $emailId;
+
+    $fileExists = file_exists($logFileForTheUser);
+
+    $content = "";
+
+    if ($fileExists == 1) {
+        $fp = fopen($logFileForTheUser, 'r');
+        $content .= fread($fp, 30000); 
+    }
+
     $row = mysql_fetch_object(mysql_query("SELECT * FROM USERS WHERE emailId = '$emailId' AND isActive = 1"));
-    $accountRow = mysql_fetch_object(mysql_query("SELECT * FROM ACCOUNTS WHERE userId = '$emailId'"));
 }
 catch (Exception $e) {
-    header("Location: error.php");
+    header ("Location: error.php");
 }
 
 $token = NoCSRF::generate( 'csrf_token' );
@@ -40,7 +49,7 @@ $token = NoCSRF::generate( 'csrf_token' );
 <html class="sidebar sidebar-collapse">
 <!-- <![endif]-->
 <head>
-    <title>Account Overview</title>
+    <title>Change Password</title>
     <!-- Meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -66,6 +75,7 @@ $token = NoCSRF::generate( 'csrf_token' );
     <script src="../assets/components/plugins/less-js/less.min.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
     <script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.0.3-rc2"></script>
     <script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
+	<script src="../assets/components/library/js/changepassword.validation.js"></script>
     <script>
     if ( /*@cc_on!@*/ false && document.documentMode === 10)
     {
@@ -95,7 +105,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                 <ul class="menu list-unstyled hide" id="navigation_modules_front">
                 </ul>
                 <ul class="menu list-unstyled" id="navigation_current_page">
-                    <li class="active"><a href="#" class="glyphicons home"><i></i><span>Account Overview</span></a>
+                    <li><a href="accountoverview.php?csrf_token=<?php echo $token; ?>" class="glyphicons home"><i></i><span>Account Overview</span></a>
                     </li>
 					<li class="hasSubmenu ">
                         <a href="#sidebar-collapse-overview" data-toggle="collapse" class="glyphicons money ">
@@ -117,7 +127,7 @@ $token = NoCSRF::generate( 'csrf_token' );
 					<li><a href="users.php?lang=en&csrf_token=<?php echo $token; ?>" class="glyphicons parents"><i></i><span>Registered Users</span></a>
                         <?php } ?>
                     </li>
-                    <li><a href="batchlogs.php?csrf_token=<?php echo $token; ?>" class="glyphicons notes_2"><i></i><span>Batch Logs</span></a>
+                    <li><a href="#" class="glyphicons notes_2"><i></i><span>Batch Logs</span></a>
                     </li>
                     <?php if ($row->isAdmin == 1) { ?>
 					<li><a href="usersPrivChange.php?lang=en&csrf_token=<?php echo $token; ?>" class="glyphicons parents"><i></i><span>Privilege Change</span></a>
@@ -145,11 +155,9 @@ $token = NoCSRF::generate( 'csrf_token' );
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="changepassword.php?csrf_token=<?php echo $token; ?>" class="glyphicons edit no-ajaxify"><i></i>Change Password</a>
-                            </li>
+                            
                             <li><a href="banklogout.php?csrf_token=<?php echo $token; ?>" class="glyphicons lock no-ajaxify"><i></i>Logout</a>
                             </li>
-							
                         </ul>
                     </li>
                 </ul>
@@ -164,36 +172,40 @@ $token = NoCSRF::generate( 'csrf_token' );
                     <div class="box-generic">
                         <table class="table table-invoice">
                             <tbody>
+								<tr>
+									<td><b>All fields marked <span style="color:red;">*</span> are mandatory</b></td>
+								</tr>
                                 <tr>
-                                    <td style="width: 50%;">
-                                        <p class="lead">Account information</p>
-                                        <h2><?=$accountRow->accountNo;?></h2>
-                                        <address class="margin-none">
-                                            <strong>Savings Account</strong> <br/>
-                                            <abbr title="Balance">Balance:</abbr> <?=number_format($accountRow->balance, 2)?> &euro;
-                                            <br/>
-                                            <abbr title="Join Date">Join Date:</abbr> <?=date("d F Y", strtotime($row->createdDate))?>
-                                        </address>
+                                    <td>
+                                        Current Password<span style="color:red;">*</span> :- 
                                     </td>
-                                    <td class="right">
-                                        <p class="lead">User Information</p>
-                                        <h2><?php echo $row->firstName. " " . $row->lastName?></h2>
-                                        <address class="margin-none">
-                                            <strong></strong>
-                                            <strong><a href="#">Business</a>
-                                            </strong>
-                                            <br>
-                                            <abbr title="Work email">e-mail:</abbr> <a href="mailto:#"><?=$row->emailId?></a>
-                                            <br
-                                            />
-                                            <abbr title="Work Phone">Mobile: </abbr><?=$row->mobileNo?>
-                                            <br/>
-                                            <div class="separator line"></div>
-                                            <p class="margin-none">
-                                                <strong>Note:</strong>
-                                                <br/>Please always keep your user account details safe</p>
-                                        </address>
+                                    <td>
+										<input type="text" class="form-control" id="currentpassword" placeholder="Current Password" name="currentpassword" style="width: 30%;">
+									</td>                                    
+                                </tr>
+								<tr>
+                                    <td>
+                                        New Password<span style="color:red;">*</span> :- 
                                     </td>
+                                    <td>
+										<input type="text" class="form-control" id="newpassword" placeholder="New Password" name="newpassword" style="width: 30%;">
+									</td>  
+                                </tr>
+								<tr>
+                                    <td>
+                                        Confirm New Password<span style="color:red;">*</span> :- 
+                                    </td>
+                                    <td>
+										<input type="text" class="form-control" id="confirmnewpassword" placeholder="New Password" name="confirmnewpassword" style="width: 30%;">
+									</td>  
+                                </tr>
+								<tr>
+                                    <td>
+                                        <button class="btn btn-primary btn-stroke" id="changepasswordsubmit">Submit</button>
+                                    </td>
+                                    <td>
+										<button class="btn btn-primary btn-stroke" id="changepasswordrest">Reset</button>
+									</td>  
                                 </tr>
                             </tbody>
                         </table>

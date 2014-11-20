@@ -14,3 +14,17 @@ function validation() {
 
   
 
+$(function(){
+
+$("#forgotpasswordbutton").click(function(e) {
+	 $("#forgotpasswordmodal").click();
+	});
+
+	$("#forgotpasswordsubmit").click(function(e) {
+	    console.log("Inside password modal");
+	});
+	$("#modalForgotPasswordForm").submit(function(e) {
+	  e.preventDefault();
+	});
+
+});
