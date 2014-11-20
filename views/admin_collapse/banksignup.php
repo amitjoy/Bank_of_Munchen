@@ -1,9 +1,10 @@
 <?php 
-//register.php
+session_start();
 
 require_once '../../includes/global.inc.php';
 require_once '../../utils/Generators.util.php';
 require_once '../../includes/mail.inc.php';
+require_once '../../libs/securimage/securimage.php';
 
 //initialize php variables used in the form
 $firstName = "";
@@ -16,6 +17,9 @@ $password_confirm = "";
 $errorIsRejected = "";
 $errorEmailExists = "";
 
+$securimage = new Securimage();
+
+
 //Temprary arrays used to store variable for further operation
 $userData = array();
 $accountData = array();
@@ -27,6 +31,15 @@ if (isset($_SESSION['logged_in'])) {
 
 //check to see that the form has been submitted
 if(isset($_POST['submit_form'])) {
+
+    if (!$securimage->check($_POST['captcha_code'])) {
+        $success = false;
+        ?>
+        <script>
+          alert("Captcha Error");
+        </script>
+        <?php
+    }
 
     //retrieve the $_POST variables
     $firstName = Validation::xss_clean(DB::makeSafe($_POST["firstName"]));
@@ -51,7 +64,7 @@ if(isset($_POST['submit_form'])) {
         <?php
     }
 
-    if (!preg_match("^\d{11}$", $mobileNo)) {
+    if (!preg_match("/(\d{11})/", $mobileNo)) {
         $success = false;
         ?>
         <script>
@@ -263,6 +276,14 @@ if(isset($_POST['submit_form'])) {
                                                         <div class="form-group">
                                                             <label for="exampleInputPassword1">Confirm Password</label>
                                                             <input type="password" class="form-control" id="retypePassword" placeholder="Retype Password" name="retypePassword">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <img id="captcha" src="/securimage/securimage_show.php" alt="CAPTCHA Image" />
+                                                            <object type="application/x-shockwave-flash" data="/securimage/securimage_play.swf?bgcol=%23ffffff&amp;icon_file=%2Fsecurimage%2Fimages%2Faudio_icon.png&amp;audio_file=%2Fsecurimage%2Fsecurimage_play.php" height="32" width="32"><param name="movie" value="/securimage/securimage_play.swf?bgcol=%23ffffff&amp;icon_file=%2Fsecurimage%2Fimages%2Faudio_icon.png&amp;audio_file=%2Fsecurimage%2Fsecurimage_play.php"></object>
+                                                            <a href="#" onclick="document.getElementById('captcha').src = '/securimage/securimage_show.php?' + Math.random(); return false"><img height="32" width="32" src="/securimage/images/refresh.png" alt="Refresh Image" onclick="this.blur()" border="0"></a>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="captcha_code" id="captcha_code" size="10" maxlength="6" placeholder="Captcha Code"/>
                                                         </div>
                                                         <input type="submit" class="btn btn-primary btn-block" name="submit_form" value="Sign Up">
                                                         <button type="reset" class="btn btn-primary btn-block">Reset</button>                                                        

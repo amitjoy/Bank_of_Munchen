@@ -30,8 +30,8 @@ class DB {
 	//open a connection to the database. Make sure this is called 
 	//on every page that needs to use the database.
 	public function connect() {
-		$connection = mysql_connect($this->db_host, $this->db_user, $this->db_pass);
-		mysql_select_db($this->db_name);
+		$connection = @mysql_connect($this->db_host, $this->db_user, $this->db_pass);
+		@mysql_select_db($this->db_name);
 		
 		return true;
 	}
@@ -42,7 +42,7 @@ class DB {
 	public function processRowSet($rowSet, $singleRow=false)
 	{
 		$resultArray = array();
-		while ($row = mysql_fetch_assoc($rowSet))
+		while ($row = @mysql_fetch_assoc($rowSet))
 		{
 			array_push($resultArray, $row);
 		}
@@ -58,8 +58,8 @@ class DB {
 	//return value is an associative array with column names as keys.
 	public function select($table, $where) {
 		$sql = "SELECT * FROM $table WHERE $where";
-		$result = mysql_query($sql);
-		if (mysql_num_rows($result) == 1)
+		$result = @mysql_query($sql);
+		if (@mysql_num_rows($result) == 1)
 			return $this->processRowSet($result, true);
 		
 		return $this->processRowSet($result);
@@ -72,7 +72,7 @@ class DB {
 	public function update($data, $table, $where) {
 		foreach ($data as $column => $value) {
 			$sql = "UPDATE $table SET $column = $value WHERE $where";
-			mysql_query($sql) or die(mysql_error());
+			@mysql_query($sql) or die(@mysql_error());
 		}
 		return true;
 	}
@@ -95,7 +95,7 @@ class DB {
 		
 		$sql = "INSERT INTO $table ($columns) values ($values)";
 				
-		mysql_query($sql) or die(mysql_error());
+		@mysql_query($sql) or die(@mysql_error());
 		
 		//return the ID of the user in the database.
 		return mysql_insert_id();
@@ -104,7 +104,7 @@ class DB {
 
 	//This is to sanitize variable passed to the SQL queries
 	public static function makeSafe ($variable) {
-    	$variable = mysql_real_escape_string(trim($variable));
+    	$variable = @mysql_real_escape_string(trim($variable));
 
     	return $variable;
 	}
