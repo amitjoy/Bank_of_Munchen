@@ -32,13 +32,14 @@ if (isset($_SESSION['logged_in'])) {
 //check to see that the form has been submitted
 if(isset($_POST['submit_form'])) {
 
+    //CAPTCHA Validation
     if (!$securimage->check($_POST['captcha_code'])) {
-        $success = false;
         ?>
         <script>
-          alert("Captcha Error");
+          alert("Captcha Validation Failed");
         </script>
         <?php
+        exit;
     }
 
     //retrieve the $_POST variables
