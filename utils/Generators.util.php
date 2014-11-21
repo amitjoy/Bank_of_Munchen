@@ -99,7 +99,7 @@ class Generators {
 
 	private static function randomPrimeNumber () {
 
-		$start = rand ( 12345 , 999999999 );
+		$start = rand ( 12345 , 799999999 );
 
 		for ($i = $start; $i < 999999999 ; $i++) { 
 
