@@ -40,7 +40,7 @@ try {
   $tanEmailMessage = "";
 
   for ($i=0; $i < count($tanNos); $i++) { 
-    $tanEmailMessage .= $i . ":" . $tanNos[$i] . "<br/>";
+    $tanEmailMessage .= $i . ": " . $tanNos[$i] . "<br/>";
     $tanEmailMessage .= "<br/><hr>";
   }
 

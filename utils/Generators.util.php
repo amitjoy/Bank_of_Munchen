@@ -88,13 +88,14 @@ class Generators {
 
 	private static function generateTAN ($key) {
 
-		$imputText = bcadd (num ($key), randomPrimeNumber());
+		$imputText = bcadd (self::num ($key), self::randomPrimeNumber());
 		$imputKey = $key;
 		$blockSize = 256;
 
 		$aes = new AES($imputText, $imputKey, $blockSize);
 
 		$enc = $aes->encrypt();
+		return $enc;
 	}
 
 	private static function randomPrimeNumber () {
@@ -103,7 +104,7 @@ class Generators {
 
 		for ($i = $start; $i < 999999999 ; $i++) { 
 
-			if (is_prime($i)) {
+			if (self::is_prime($i)) {
 				return $i;
 			}
 		}
