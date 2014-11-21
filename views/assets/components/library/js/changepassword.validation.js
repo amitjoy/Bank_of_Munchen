@@ -16,6 +16,20 @@ $("#changepasswordsubmit").click(function(){
 		return false;
 	}
 
+	if ($('#newpassword').val() != $('#confirmnewpassword').val()) {
+		alert('Wrong Confirm Password!');
+		return false;
+	}
+
+	var currentpasswordHash = CryptoJS.SHA512($('#currentpassword').val());
+    var newpasswordHash = CryptoJS.SHA512($('#newpassword').val());
+    var confirmnewpasswordHash = CryptoJS.SHA512($('#confirmnewpassword').val());
+
+    $('#confirmnewpassword').val(confirmnewpasswordHash);
+    $('#newpassword').val(newpasswordHash);
+    $('#currentpassword').val(currentpasswordHash);
+	
+
 
 });
 

@@ -72,6 +72,7 @@ class DB {
 	public function update($data, $table, $where) {
 		foreach ($data as $column => $value) {
 			$sql = "UPDATE $table SET $column = $value WHERE $where";
+
 			@mysql_query($sql) or die(@mysql_error());
 		}
 		return true;

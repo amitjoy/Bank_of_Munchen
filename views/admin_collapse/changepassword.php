@@ -22,7 +22,7 @@ try {
 
     $row = mysql_fetch_object(mysql_query("SELECT * FROM USERS WHERE emailId = '$emailId' AND isActive = 1"));
 
-    if (isset($_POST['changepasswordsubmit'])) {
+    if (!empty($_POST)) {
 
         $currentpassword = Validation::xss_clean(DB::makeSafe($_POST["currentpassword"]));
         $newpassword = Validation::xss_clean(DB::makeSafe($_POST["newpassword"]));
@@ -31,7 +31,7 @@ try {
         // Check if current password is correct
         $userTools = new UserTools();
 
-        if (!$userTools->login($emailId, $currentpassword)){ 
+        if (!$userTools->login($emailId, $currentpassword)) { 
             header ("Location: error.php?message=Current Password Wrong");
             return;
         }
@@ -42,10 +42,16 @@ try {
         }
 
         $updateDate = array(
-                "password" => $newpassword
+                "password" => "'". $newpassword ."'"
             );
 
-        $db->update ($updateDate. "ACCOUNTS", "userId = $emailId");
+        if ($db->update ($updateDate, "ACCOUNTS", "userId = '".$emailId."'")) {
+            ?>
+            <script>
+                alert ("Password updated");
+            </script>
+            <?php
+        }
     }
 }
 catch (Exception $e) {
@@ -85,7 +91,6 @@ $token = NoCSRF::generate( 'csrf_token' );
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
     <script src="../assets/components/library/jquery/jquery.min.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
-    <script src="../assets/components/library/js/changePasswordForm.validation.js"></script>
     <script src="../assets/components/library/rollups/sha512.js"></script>
     <script src="../assets/components/library/jquery/jquery-migrate.min.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
     <script src="../assets/components/library/modernizr/modernizr.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
@@ -187,7 +192,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                 <div class="innerAll shop-client-products cart invoice">
                    
                     <div class="box-generic">
-                        <form role="form" action="changepassword.php?csrf_token=<?php echo $token;?>" method="POST" id="changePasswordForm" onsubmit="return validateChangePasswordForm()">
+                        <form role="form" action="changepassword.php?csrf_token=<?php echo $token;?>" method="POST" id="changePasswordForm">
                         <table class="table table-invoice">
                             <tbody>
 								<tr>
