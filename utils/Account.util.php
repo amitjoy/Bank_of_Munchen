@@ -77,17 +77,15 @@ class AccountUtils {
 		$aes = new AES($imputText, $imputKey, $blockSize);
 
 		$dec = $aes->decrypt();
-		$subs = bcsub (self::num ($emailId), $dec);
-		echo $subs;
 
-		if (preg_match("/(\d+)/", $dec)) {
+		if (is_numeric($dec)) {
 			if ($subs != self::num ($emailId))
-				if (self::is_prime(bcsub (self::num ($emailId), $dec))) {
+				if (self::is_prime(bcsub ($dec, self::num ($emailId)))) {
 					return true;
 				}
 		}
-
-		return false;
+		else
+			return false;
 	}
 
 	private static function num($text)
@@ -133,6 +131,7 @@ class AccountUtils {
 	}
 
 	private static function is_prime($number){
+
 			if ($number < 0) {
 				$number = abs ($number);
 			}

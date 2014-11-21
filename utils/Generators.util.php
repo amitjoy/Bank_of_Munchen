@@ -100,9 +100,9 @@ class Generators {
 
 	private static function randomPrimeNumber () {
 
-		$start = rand ( 12345 , 799999999 );
+		$start = rand ( 12345 , 7999999 );
 
-		for ($i = $start; $i < 999999999 ; $i++) { 
+		for ($i = $start; $i < 9999999 ; $i++) { 
 
 			if (self::is_prime($i)) {
 				return $i;

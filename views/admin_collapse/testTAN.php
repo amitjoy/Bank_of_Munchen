@@ -18,7 +18,7 @@ $tanNos = Generators::generateTANs ($emailToUpdate, 10);
 
 echo $tanEmailMessage;
 
-$tanToDecrypt = "dHDhS024hPzH/T8GxZiWFZoVDNVVJWCj/nfi7rBeNxBWzeDd0Dv9zYrCptJH37bvYvnZ2D+TqW2VAMjIiBRk3g==";
+$tanToDecrypt = "dHDhS024hPzH/T8GxZiWFZoVDNVVJWCj/nfi7rBeNxBKQf904WD5zSEV4KppYKCzpC4mldvM9THJB2gwlw==";
 
 echo "====>".AccountUtils::checkTANValidity($emailToUpdate, $tanToDecrypt);
 
