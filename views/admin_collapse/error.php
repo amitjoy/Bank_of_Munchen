@@ -12,7 +12,7 @@ if(isset($_GET['message'])) {
     $message = Validation::xss_clean($_GET['message']);
 }
 else {
-    $message = "Hacking attempt detected";
+    $message = "Session Expired, Please login again!.";
     $userTools = new UserTools();
     $userTools->logout();
 }

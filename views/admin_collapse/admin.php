@@ -204,7 +204,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                                         echo "<td class='center'><span class='label label-primary'>".date("d F Y", strtotime($value['createdDate']))."</span></td>";
                                                         echo "<td class='center'>".$accountNo."</td>";
                                                         echo "<td class='center'>".$value['mobileNo']."</td>";
-														echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='#' class='btn btn-success' url='approveuser.php?emailId=".$value['emailId']."&csrf_token=".$token."'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
+														echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='#' class='btn btn-success' url='approveuser.php?emailId=".$value['emailId']."&csrf_token=".$token."&initial_amount='><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
                                                         //echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='approveuser.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-success'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$value['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
                                                         echo "</tr>";
                                                         }
@@ -221,7 +221,7 @@ $token = NoCSRF::generate( 'csrf_token' );
                                                             echo "<td class='center'><span class='label label-primary'>".date("d F Y", strtotime($userApprovalArray['createdDate']))."</span></td>";
                                                             echo "<td class='center'>".$accountNo."</td>";
                                                             echo "<td class='center'>".$userApprovalArray['mobileNo']."</td>";
-															echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a class='btn btn-success' ulr='approveuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
+															echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a class='btn btn-success' url='approveuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."&initial_amount='><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
                                                             //echo "<td class='text-right actions'><div class='btn-group btn-group-xs'><a href='approveuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."' class='btn btn-success'><i class='fa fa-check'></i></a><a href='rejectuser.php?emailId=".$userApprovalArray['emailId']."&csrf_token=".$token."' class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>";
                                                             echo "</tr>";
                                                          }
@@ -328,7 +328,7 @@ $token = NoCSRF::generate( 'csrf_token' );
 													<div class="form-group">
 														<label for="inputPassword3" class="col-sm-2 control-label">Amount</label>
 														<div class="col-sm-10">
-															<input type="text" class="form-control" id="initialiseamount" placeholder="Amount">
+															<input type="text" class="form-control" id="initialiseamount" placeholder="Amount" value='0'>
 														</div>
 													</div>
 													

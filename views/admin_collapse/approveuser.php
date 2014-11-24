@@ -29,8 +29,9 @@ try {
   if (filter_var($emailToUpdate, FILTER_VALIDATE_EMAIL) != true) {
     header ("Location: error.php?message=Email Validation Failed");
   }
-
-  if (!preg_match("/(\d+)/", $initialAmount)) {
+  
+  
+  if (!preg_match("/^[[:digit:]]+$/", $initialAmount)) {
     header ("Location: error.php?message=Initial Amount Validation Failed");
   }
 
@@ -97,16 +98,16 @@ try {
     $updateData = array (
         "isActive" => 1
       );
-
+	$emailToUpdateWithQuotes = "'$emailToUpdate'";
     // Make the user active
-    $db->update ($updateData, "USERS", "emailId = '$emailToUpdate'");
+    $db->update ($updateData, "USERS", "emailId = $emailToUpdateWithQuotes");
 
     // Update the initial balance
     $updateData = array (
       "balance" => $initialAmount
     );
 
-    $db->update ($updateData, "ACCOUNTS", "userId = $emailToUpdate");
+    $db->update ($updateData, "ACCOUNTS", "userId = $emailToUpdateWithQuotes");
 
     //send TAN email to the user 
       $message = Swift_Message::newInstance()
