@@ -125,6 +125,7 @@ try {
       $mailer->send($message);
 }
 catch (Exception $e){
+	
   header("Location: error.php");
   return;
 }

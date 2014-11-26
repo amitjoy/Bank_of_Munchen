@@ -112,13 +112,13 @@ class Generators {
 		
 		$privateKeyResource = openssl_pkey_new($config);
 		openssl_pkey_export($privateKeyResource, $privateKey);
-		$privateKey = str_replace('-----BEGIN PUBLIC KEY-----', '', $privateKey);
-		$privateKey = trim(str_replace('-----END PUBLIC KEY-----', '', $privateKey));
+		//$privateKey = str_replace('-----BEGIN PUBLIC KEY-----', '', $privateKey);
+		//$privateKey = trim(str_replace('-----END PUBLIC KEY-----', '', $privateKey));
 		
 		$publicKeyResource = openssl_pkey_get_details ($privateKeyResource);
 		$publicKey = $publicKeyResource["key"];
-		$publicKey = str_replace('-----BEGIN PUBLIC KEY-----', '', $publicKey);
-		$publicKey = trim(str_replace('-----END PUBLIC KEY-----', '', $publicKey));
+		//$publicKey = str_replace('-----BEGIN PUBLIC KEY-----', '', $publicKey);
+		//$publicKey = trim(str_replace('-----END PUBLIC KEY-----', '', $publicKey));
 		
 		$data = array(
 				"pkey" => "'". $publicKey ."'",
@@ -127,8 +127,8 @@ class Generators {
 		
 		$db->update ($data, "ACCOUNTS", "userId = '$emailId'");
 
-		openssl_pkey_free($privateKeyResource);
-		openssl_pkey_free($publicKeyResource);
+		//openssl_pkey_free($privateKeyResource);
+		//openssl_pkey_free($publicKeyResource);
 
 		return $publicKey;
 		
@@ -149,8 +149,10 @@ class Generators {
 		$tanNo = "";
 		
 		// while (1) {
-		
-			openssl_public_encrypt($accountNo, $tanNo, self::generateKey ($key));
+			
+			$validKey = self::generateKey ($key);
+			
+			openssl_public_encrypt($accountNo, $tanNo, $validKey);
 			// check if it exists in database
 			// $query = $db->select ("TANS", "no = '$tanNo'");
 			// $rowCount = count($query);
