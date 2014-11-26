@@ -66,9 +66,32 @@ class AccountUtils {
 			return true;
 	} 
 
+	public static function checkTANValidity ($emailId, $tanNo) {
+		
+		$db = DB::getInstance();
+		$db->connect();
+
+		$accountData = $db->select("ACCOUNTS", "userId = '$emailId'");
+		$accountNo = $accountData["accountNo"];
+		$publicKey = $accountData["pkey"];
+		$privateKey = $accountData["ptkey"];
+
+		$privateKeyResource = openssl_get_privatekey($privateKey);
+		openssl_private_decrypt($tan, $decrypted, $privateKeyResource);
+
+		if ($decrypted == $accountNo) {
+			return true;
+		}
+
+		return false;
+
+
+		
+	}
+
 	// Used to check whether the user has right to 
 	// access the tan provided for the transaction
-	public static function checkTANValidity ($emailId, $tanNo) {
+	public static function checkTANValidity_old_old ($emailId, $tanNo) {
 		
 		$imputText = $tanNo;
 		$imputKey = $emailId;
