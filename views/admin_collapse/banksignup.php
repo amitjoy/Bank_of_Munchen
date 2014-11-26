@@ -50,6 +50,7 @@ if(isset($_POST['submit_form'])) {
     $mobileNo = Validation::xss_clean(DB::makeSafe($_POST["mobileNo"]));
     $password = Validation::xss_clean(DB::makeSafe($_POST["password"]));
     $password_confirm = Validation::xss_clean(DB::makeSafe($_POST['retypePassword']));
+	$securityType = Validation::xss_clean(DB::makeSafe($_POST['radio']));
 
     //initialize variables for form validation
     $success = true;
@@ -120,7 +121,8 @@ if(isset($_POST['submit_form'])) {
         $accountData["balance"] = INITIAL_BALANCE;
         $accountData["accountNo"] = Generators::generateUniqueAccountNo();
         $accountData['password'] = $password; 
-    
+		$accountData['securitytype'] = $securityType; 
+		
         //create the new user object
         $newUser = new User($userData);
 
@@ -284,9 +286,9 @@ if(isset($_POST['submit_form'])) {
 														<div class="form-group">
 															<label for="exampleInputPassword1">Security Method</label>
 															<br/>
-															<input type="radio" name="radio" checked="checked" value="mail">	TAN List through mail
+															<input type="radio" name="radio" checked="checked" value="1">	TAN List through mail
 															<br/>	
-															<input type="radio" name="radio" value="scs">TAN Generation using SCS
+															<input type="radio" name="radio" value="2">TAN Generation using SCS
 														</div>
                                                         <div class="form-group">
                                                             <img id="captcha" src="../../libs/securimage/securimage_show.php" alt="CAPTCHA Image" />

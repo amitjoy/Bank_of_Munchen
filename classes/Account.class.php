@@ -9,6 +9,7 @@ class Account {
 	private $balance;
 	private $accountNo;
 	private $password;
+	private $sectype;
 
 
 	//Constructor is called whenever a new object is created.
@@ -18,6 +19,7 @@ class Account {
 		$this->balance = (isset($data['balance'])) ? $data['balance'] : "";
 		$this->accountNo = (isset($data['accountNo'])) ? $data['accountNo'] : "";
 		$this->password = (isset($data['password'])) ? $data['password'] : "";
+		$this->sectype = (isset($data['securitytype'])) ? $data['securitytype'] : "";
 	}
 
 	public function save ($isNewAccount = false) {
@@ -27,10 +29,11 @@ class Account {
 		if ($isNewAccount) {
 
 			$data = array(
-				"userId" => DB::makeSafe("'$this->userId'"),
-				"balance" => DB::makeSafe("'$this->balance'"),
-				"accountNo" => DB::makeSafe("'$this->accountNo'"),
-				"password" => DB::makeSafe("'$this->password'"),
+				"userId" => Validation::xss_clean(DB::makeSafe("'$this->userId'")),
+				"balance" => Validation::xss_clean(DB::makeSafe("'$this->balance'")),
+				"accountNo" => Validation::xss_clean(DB::makeSafe("'$this->accountNo'")),
+				"password" => Validation::xss_clean(DB::makeSafe("'$this->password'")),
+				"securitytype" => Validation::xss_clean(DB::makeSafe("'$this->sectype'")),
 			);
 			
 			$this->id = $db->insert($data, "ACCOUNTS");

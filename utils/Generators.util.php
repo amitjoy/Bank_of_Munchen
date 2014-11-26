@@ -3,6 +3,7 @@
 require_once "RandomAccNoGenerator.util.php";
 require_once "../../classes/DB.class.php";
 require_once '../../libs/aes-sec/AES.php';
+require_once '../../includes/constants.inc.php';
 
 ini_set('precision', 17);
 
@@ -86,7 +87,7 @@ class Generators {
 		return $tanArray;
 	}
 
-	private static function generateTAN ($key) {
+	private static function generateTAN_old_old ($key) {
 
 		$imputText = bcadd (self::num ($key), self::randomPrimeNumber());
 		$imputKey = $key;
@@ -96,6 +97,52 @@ class Generators {
 
 		$enc = $aes->encrypt();
 		return $enc;
+	}
+	
+	private static function generateKey ($emailId) {
+	
+		$db = DB::getInstance();
+		$db->connect();
+		
+		$privateKeyResource = fopen(PRIVATE_KEY_LOC, "r");
+		$privateKey = fread($privateKeyResource, 2048);
+		fclose($privateKeyResource);
+		
+		$resourcePrivateKey = openssl_get_privatekey ($privateKey);
+		$publicKeyResource = openssl_pkey_get_details ($resourcePrivateKey);
+		$publicKey = $publicKeyResource["key"];
+		
+		$data = array(
+				"key" => $publicKey
+			);
+		
+		$db->update ($data, "ACCOUNTS", "userId = '$emailId'");
+		
+		return $publicKey;
+		
+	}
+	
+	private static function generateTAN ($key) {
+	
+		$db = DB::getInstance();
+		$db->connect();
+		
+		$tanNo = "";
+		
+		while (1) {
+		
+			$tanNo = self::generateKey ($key);
+			// check if it exists in database
+			$query = $db->select ("TANS", "no = $tanNo");
+			$rowCount = count($query);
+		    // if not found in the db (it is unique), break out of the loop
+		    if($rowCount == 0) {
+		        break;
+		    }
+			
+		}
+		
+		return $tanNo;
 	}
 
 	private static function randomPrimeNumber () {
@@ -130,8 +177,46 @@ class Generators {
 		}
 		return false;
 	}
-
 	public static function generateTANs ($emailId, $limit) {
+		
+		$db = DB::getInstance();
+		$db->connect();
+		
+		$tanArray = array();
+		
+		$data = $db->select("ACCOUNTS", "userId = '$emailId'");
+		
+		if (is_array($data) & $data["securitytype"] != "") {
+			$securitytype = $data["securitytype"];
+			
+			if ($securitytype == 1) {
+				//TAN
+				for ($i = 0; $i < $limit; $i++) { 
+				
+					$tanNo = self::generateTAN($emailId);
+					array_push($tanArray, $tanNo);
+					
+					$updateData = array(
+							"no" => $tanNo
+						);
+						
+					$db->update($updateData, "TANS", "userId = '$emailId'");
+				}
+				
+			}
+			else if ($securitytype == 2) {
+				//SCS
+			}
+			else {
+				//DO NOTHING
+			}
+		}
+
+		return $tanArray;
+	}
+
+	
+	public static function generateTANs_old_old ($emailId, $limit) {
 		$tanArray = array();
 
 		for ($i = 0; $i < $limit; $i++) { 
