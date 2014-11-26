@@ -4,7 +4,7 @@ define("INITIAL_BALANCE", 0);
 define("NO_OF_TAN_TO_GENERATE", 100);
 define("LOCATION_OF_UPLOAD_DIR", "../../uploads/");
 define("C_EXECUTABLE_NAME", "/home/samurai/Downloads/securecoding/BTCApiop");
-define("PRIVATE_KEY_LOC", "/some/where/in/the/filesystem");
+define("PRIVATE_KEY_LOC", "../../../private.pem");
 define("MAIL_SUBJECT_TRANSACTION", "Transaction Initiated");
 define("MAIL_FROM", "noreply@bankofmuenchen.de");
 define("MAIL_FROM_NAME", "Bank of Muenchen");
@@ -23,5 +23,8 @@ define("LOCATION_BATCH_LOG_DIR", "../../logs/");
 define("FLOAT_PRECISION", 2);
 define("MAIL_SUBJECT_USER_REJECTED", "User Account Rejected");
 define("MAIL_BODY_USER_REJECTED", "We are very sorry to inform you that your user account is rejected. Please contact nearest branch.");
+define("DIGEST_ALG", "sha512");
+define("PRIVATE_KEY_BITS", 512);
+define("KEY_TYPE", OPENSSL_KEYTYPE_RSA);
 
 ?>

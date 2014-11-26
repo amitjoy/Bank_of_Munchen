@@ -87,7 +87,7 @@ class Generators {
 		return $tanArray;
 	}
 
-	private static function generateTAN_old_old ($key) {
+	private static function generateTAN_old_old_old ($key) {
 
 		$imputText = bcadd (self::num ($key), self::randomPrimeNumber());
 		$imputKey = $key;
@@ -103,21 +103,33 @@ class Generators {
 	
 		$db = DB::getInstance();
 		$db->connect();
+
+		$config = array(
+		    "digest_alg" => DIGEST_ALG,
+		    "private_key_bits" => PRIVATE_KEY_BITS,
+		    "private_key_type" => KEY_TYPE,
+		);   
 		
-		$privateKeyResource = fopen(PRIVATE_KEY_LOC, "r");
-		$privateKey = fread($privateKeyResource, 2048);
-		fclose($privateKeyResource);
+		$privateKeyResource = openssl_pkey_new($config);
+		openssl_pkey_export($privateKeyResource, $privateKey);
+		$privateKey = str_replace('-----BEGIN PUBLIC KEY-----', '', $privateKey);
+		$privateKey = trim(str_replace('-----END PUBLIC KEY-----', '', $privateKey));
 		
-		$resourcePrivateKey = openssl_get_privatekey ($privateKey);
-		$publicKeyResource = openssl_pkey_get_details ($resourcePrivateKey);
+		$publicKeyResource = openssl_pkey_get_details ($privateKeyResource);
 		$publicKey = $publicKeyResource["key"];
+		$publicKey = str_replace('-----BEGIN PUBLIC KEY-----', '', $publicKey);
+		$publicKey = trim(str_replace('-----END PUBLIC KEY-----', '', $publicKey));
 		
 		$data = array(
-				"key" => $publicKey
+				"pkey" => "'". $publicKey ."'",
+				"ptkey" => "'". $privateKey ."'"
 			);
 		
 		$db->update ($data, "ACCOUNTS", "userId = '$emailId'");
-		
+
+		openssl_pkey_free($privateKeyResource);
+		openssl_pkey_free($publicKeyResource);
+
 		return $publicKey;
 		
 	}
@@ -126,23 +138,30 @@ class Generators {
 	
 		$db = DB::getInstance();
 		$db->connect();
+
+		$accountData = $db->select("ACCOUNTS", "userId = '$key'");
+		$accountNo = "";
+
+		if (is_array($accountData) && $accountData["accountNo"] != "") {
+			$accountNo = $accountData["accountNo"];
+		}
 		
 		$tanNo = "";
 		
-		while (1) {
+		// while (1) {
 		
-			$tanNo = self::generateKey ($key);
+			openssl_public_encrypt($accountNo, $tanNo, self::generateKey ($key));
 			// check if it exists in database
-			$query = $db->select ("TANS", "no = $tanNo");
-			$rowCount = count($query);
+			// $query = $db->select ("TANS", "no = '$tanNo'");
+			// $rowCount = count($query);
 		    // if not found in the db (it is unique), break out of the loop
-		    if($rowCount == 0) {
-		        break;
-		    }
+		    // if($rowCount == 0) {
+		    //     break;
+		    // }
 			
-		}
+		// }
 		
-		return $tanNo;
+		return base64_encode($tanNo);
 	}
 
 	private static function randomPrimeNumber () {
@@ -196,11 +215,13 @@ class Generators {
 					$tanNo = self::generateTAN($emailId);
 					array_push($tanArray, $tanNo);
 					
-					$updateData = array(
-							"no" => $tanNo
+					$insertData = array(
+							"no" => "'". $tanNo ."'",
+							"userId" => "'". $emailId ."'",
+							"isActive" => 0
 						);
 						
-					$db->update($updateData, "TANS", "userId = '$emailId'");
+					$db->insert($insertData, "TANS");
 				}
 				
 			}

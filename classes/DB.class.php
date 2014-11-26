@@ -99,7 +99,7 @@ class DB {
 		@mysql_query($sql) or die(@mysql_error());
 		
 		//return the ID of the user in the database.
-		return mysql_insert_id();
+		return @mysql_insert_id();
 		
 	}
 
