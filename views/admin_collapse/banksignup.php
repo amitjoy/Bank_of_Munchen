@@ -166,7 +166,7 @@ if(isset($_POST['submit_form'])) {
         $mailer->send($message);
 
         //redirect them to a welcome page
-        header("Location: signupsuccess.php?success=1");
+        header("Location: success.php?message=YOUR ACCOUNT HAS BEEN CREATED. PLEASE WAIT FOR IT TO BE APPROVED");
         
     }
 

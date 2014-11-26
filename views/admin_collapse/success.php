@@ -8,8 +8,8 @@ if(isset($_SESSION['logged_in'])) {
 }
 
 //check to see if they've submitted the login form
-if(isset($_GET['success'])) { 
-    $message = "YOUR ACCOUNT HAS BEEN CREATED. PLEASE WAIT FOR IT TO BE APPROVED";
+if(isset($_GET['message'])) { 
+    $message = Validation::xss_clean($_GET['message']);
 }
 
 if (!isset($_GET["success"]))
@@ -76,7 +76,7 @@ if (!isset($_GET["success"]))
                             <i class="fa fa-5x fa-check-square text-success "></i>
                         </div>
                         <h1 class="strong innerTB">Success!</h1>
-                        <h4 class="innerB">Registration is completed!</h4>
+                        <h4 class="innerB"></h4>
                         <div class="well bg-white text-success strong ">
                            <?=$message?>
                         </div>

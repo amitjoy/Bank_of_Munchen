@@ -2,7 +2,7 @@
 ob_start();
 
 require_once '../../includes/global.inc.php';
-include("../../libs/pdf/mpdf.php");
+require_once '../../libs/pdf/mpdf.php';
 require_once '../../utils/Generators.util.php';
 require_once '../../includes/mail.inc.php';
 

@@ -26,5 +26,7 @@ define("MAIL_BODY_USER_REJECTED", "We are very sorry to inform you that your use
 define("DIGEST_ALG", "sha512");
 define("PRIVATE_KEY_BITS", 512);
 define("KEY_TYPE", OPENSSL_KEYTYPE_RSA);
+define("MAIL_SUBJECT_FORGOT_PASS", "Password Reset");
+define("NO_OF_TAN", 100);
 
 ?>

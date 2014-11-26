@@ -45,7 +45,7 @@ try {
   }
 
   //$tanNos = $db->select("TANS", "userId = '$emailToUpdate'");
-  $tanNos = Generators::generateTANs ($emailToUpdate, 100);
+  $tanNos = Generators::generateTANs ($emailToUpdate, NO_OF_TAN);
   $tanEmailMessage = "";
 
   if (count($tanNos) > 1) {
