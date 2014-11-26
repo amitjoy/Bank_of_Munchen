@@ -251,6 +251,17 @@ $token = NoCSRF::generate( 'csrf_token' );
                                             <div class="separator"></div>
                                         </div>
                                     </div>
+									<div class="row">
+										<div class="col-md-3">
+                                            
+                                        </div >
+										<div class="col-md-9">
+											<label for="inputTitle">Description</label>
+                                            <input type="text" id="description" class="col-md-6 form-control" value="" placeholder="Enter transaction description"
+                                            />
+                                            <div class="separator"></div>
+										</div>
+									</div>
                                 </div>
                                 <!-- // Step 3 END -->
 								<!-- Step 4 -->

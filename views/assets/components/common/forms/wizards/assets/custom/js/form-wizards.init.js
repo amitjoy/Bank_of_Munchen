@@ -283,13 +283,14 @@ $(function()
 			var iban = $("#inputTitle").val();
 			var bic = $("#inputBic").val();
 			var tan = $("#tan").val();
+			var desc = $("#description").val(); 
 			var tranPasswordtext =$("#tranPasswordtext").val();
 			var tranPasswordhash = CryptoJS.SHA512(tranPasswordtext);
 
 			$.ajax({
 				url: "getAjax.php",
 				type: "POST",
-				data: "function=transaction&iban="+iban+"&bic="+bic+"&tan="+tan+"&amount="+amount+"&emailId="+emailId+"&password="+tranPasswordhash,
+				data: "function=transaction&iban="+iban+"&bic="+bic+"&tan="+tan+"&amount="+amount+"&emailId="+emailId+"&password="+tranPasswordhash+"&description="+desc,
 				success: function(data){
 							$("#closepasswordmodal").click();
 							//console.log("Success");
@@ -312,6 +313,7 @@ $(function()
 			$("#inputBic").val('');
 			$("#amount").val('');
 			$("#tan").val('');
+			$("#description").val('');
 			$("#confirmiban").empty();
 			$("#confirmbic").empty();
 			$("#confirmamount").empty();

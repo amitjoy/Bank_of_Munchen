@@ -15,6 +15,7 @@ $amount = Validation::xss_clean(DB::makeSafe($_POST["amount"]));
 $iban = Validation::xss_clean(DB::makeSafe($_POST["iban"]));
 $bic = Validation::xss_clean(DB::makeSafe($_POST["bic"]));
 $tan = Validation::xss_clean(DB::makeSafe($_POST["tan"]));
+$description = Validation::xss_clean(DB::makeSafe($_POST["description"]));
 $isActive = ($amount > 10000) ? 0 : 1;
 $password = Validation::xss_clean(DB::makeSafe($_POST["password"]));
 $error = "";
@@ -80,6 +81,7 @@ if ($function == "transaction") {
 			"receiverIban" => $iban,
 			"bic" => $bic,
 			"amount" => $amount,
+			"description" => $description,
 			"userId" => "'$emailId'",
 			"date" => "'".date('Y-m-d H:i:s')."'",
 			"closingBalance" => $balance,
@@ -134,6 +136,7 @@ if ($function == "transaction") {
 									"receiverIban" => $iban,
 									"bic" => $bic,
 									"amount" => $amount,
+									"description" => $description,
 									"userId" => "'$emailTargetUser'",
 									"date" => "'".date('Y-m-d H:i:s')."'",
 									"closingBalance" => $balanceOfTheTargetUser,

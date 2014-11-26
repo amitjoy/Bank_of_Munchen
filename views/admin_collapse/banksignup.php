@@ -198,6 +198,7 @@ if(isset($_POST['submit_form'])) {
     <!--[if lt IE 9]><link rel="stylesheet" href="../assets/components/library/bootstrap/css/bootstrap.min.css" /><![endif]-->
     <link rel="stylesheet" href="../assets/css/admin/module.admin.stylesheet-complete.sidebar_type.collapse.min.css"/>
     <link rel="stylesheet" href="../assets/css/admin/signupvalidation.css"/>
+	<link rel="stylesheet" href="../assets/components/common/forms/elements/bootstrap-switch/assets/lib/css/bootstrap-switch.css"/>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -211,6 +212,8 @@ if(isset($_POST['submit_form'])) {
     <script src="../assets/components/plugins/less-js/less.min.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
     <script src="../assets/components/modules/admin/charts/flot/assets/lib/excanvas.js?v=v1.0.3-rc2"></script>
     <script src="../assets/components/plugins/browser/ie/ie.prototype.polyfill.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
+	<script src="../assets/components/common/forms/elements/bootstrap-switch/assets/lib/js/bootstrap-switch.js"></script>
+	<script src="../assets/components/common/forms/elements/bootstrap-switch/assets/custom/js/bootstrap-switch.init.js"></script>
     <script>
     if ( /*@cc_on!@*/ false && document.documentMode === 10)
     {
@@ -278,6 +281,13 @@ if(isset($_POST['submit_form'])) {
                                                             <label for="exampleInputPassword1">Confirm Password</label>
                                                             <input type="password" class="form-control" id="retypePassword" placeholder="Retype Password" name="retypePassword">
                                                         </div>
+														<div class="form-group">
+															<label for="exampleInputPassword1">Security Method</label>
+															<br/>
+															<input type="radio" name="radio" checked="checked" value="mail">	TAN List through mail
+															<br/>	
+															<input type="radio" name="radio" value="scs">TAN Generation using SCS
+														</div>
                                                         <div class="form-group">
                                                             <img id="captcha" src="../../libs/securimage/securimage_show.php" alt="CAPTCHA Image" />
                                                             <object type="application/x-shockwave-flash" data="../../libs/securimage/securimage_play.swf?bgcol=%23ffffff&amp;icon_file=..%2F..%2Flibs%2Fsecurimage%2Fimages%2Faudio_icon.png&amp;audio_file=..%2F..%2Flibs%2Fsecurimage%2Fsecurimage_play.php" height="32" width="32"><param name="movie" value="../../libs/securimage/securimage_play.swf?bgcol=%23ffffff&amp;icon_file=..%2F..%2Flibs%2Fsecurimage%2Fimages%2Faudio_icon.png&amp;audio_file=..%2F..%2Flibs%2Fsecurimage%2Fsecurimage_play.php"></object>

@@ -251,6 +251,7 @@ try
 								<th class='center'>Destination IBAN No</th>
 								<th class='center'>Credit/Debit</th>
                                 <th class='center'>Date</th>
+								<th class='center'>Description</th>
                                 <th class='center'>Amount</th>
                                 <th class='center'>Status</th>
                                 <th class='center'>Closing Balance</th>
@@ -280,6 +281,7 @@ try
 											echo "<td class='center'>".$value['receiverIban']."</td>";
 											echo "<td class='center'>".$value['type']."</td>";
                                             echo "<td class='center'><span class='label label-default'>".date("d F Y", strtotime($value['date']))."</span></td>";
+											echo "<td class='center'>".$value['description']."</td>";
                                             echo "<td class='center'>&euro; ".number_format($value['amount'], 2)."</td>";
                                             echo "<td class='center'>".$active."</td>";
                                             echo "<td class='center'>&euro; ".number_format($value['closingBalance'], 2)."</td>";
@@ -309,7 +311,8 @@ try
 												echo "<td class='center'>".$transactions['receiverIban']."</td>";
 												echo "<td class='center'>".$transactions['type']."</td>";
                                                 echo "<td class='center'><span class='label label-default'>".date("d F Y", strtotime($transactions['date']))."</span></td>";
-                                                echo "<td class='center'>&euro; ".number_format($transactions['amount'], 2)."</td>";
+                                                echo "<td class='center'>".$transactions['description']."</td>";
+												echo "<td class='center'>&euro; ".number_format($transactions['amount'], 2)."</td>";
                                                 echo "<td class='center'>".$active."</td>";
                                                 echo "<td class='center'>&euro; ".number_format($transactions['closingBalance'], 2)."</td>";
                                                 echo "</tr>";
