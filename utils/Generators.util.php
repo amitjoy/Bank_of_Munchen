@@ -215,6 +215,7 @@ class Generators {
 				for ($i = 0; $i < $limit; $i++) { 
 				
 					$tanNo = self::generateTAN($emailId);
+
 					array_push($tanArray, $tanNo);
 					
 					$insertData = array(
@@ -234,7 +235,7 @@ class Generators {
 				//DO NOTHING
 			}
 		}
-
+		
 		return $tanArray;
 	}
 

@@ -54,6 +54,8 @@ try {
   //   $tanEmailMessage .= "<br/><hr>";
   // }
 
+  $password = Generators::randomPasswordGenerate(8);
+  
   $mpdf=new mPDF('c','A4','','',32,25,27,25,16,13); 
 
   $mpdf=new mPDF('win-1252','A4','','',20,15,48,25,10,10); 
@@ -65,7 +67,8 @@ try {
   $mpdf->watermark_font = 'DejaVuSansCondensed';
   $mpdf->watermarkTextAlpha = 0.1;
   $mpdf->SetDisplayMode('fullpage');
-  $mpdf->WriteHTML(utf8_encode($tanEmailMessage));
+  $mpdf->SetProtection(array('print'), $password, "");
+  $mpdf->WriteHTML($tanEmailMessage);
   $filename = 'TANs_List_'.$emailToUpdate.'.pdf';
 
   $mpdf->Output($filename,'F');
@@ -98,10 +101,14 @@ try {
                 ->setTo(array($emailToUpdate))
 
                 ->attach($attachment)
+				
+				->setBody("Password: ". $password)
   
                 ;
 
       $mailer->send($message);
+	  
+	  unlink($filename);
 }
 catch (Exception $e){
 	
