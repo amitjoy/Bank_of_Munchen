@@ -229,7 +229,14 @@ class Generators {
 				
 			}
 			else if ($securitytype == 2) {
-				//SCS
+				$scsPin = self::randomPasswordGenerate(10);
+				array_push($tanArray, $scsPin);
+
+				$updateData = array(
+						"scspin" => $scspin
+					);
+
+				$db->update($updateData, "ACCOUNTS", "userId = '$emailId'");
 			}
 			else {
 				//DO NOTHING

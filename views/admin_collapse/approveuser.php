@@ -26,6 +26,15 @@ try {
   $emailToUpdate = Validation::xss_clean(DB::makeSafe ($_GET["emailId"]));
   $initialAmount = Validation::xss_clean(DB::makeSafe ($_GET["initial_amount"]));
 
+  $updateData = array (
+        "isActive" => 1
+      );
+
+  // Update the initial balance
+  $updateBalanceData = array (
+      "balance" => $initialAmount
+    );
+
   if (filter_var($emailToUpdate, FILTER_VALIDATE_EMAIL) != true) {
     header ("Location: error.php?message=Email Validation Failed");
   }
@@ -37,78 +46,84 @@ try {
 
   //$tanNos = $db->select("TANS", "userId = '$emailToUpdate'");
   $tanNos = Generators::generateTANs ($emailToUpdate, 100);
-
   $tanEmailMessage = "";
 
-  for ($i=0; $i < count($tanNos); $i++) { 
-    $tanEmailMessage .= $i . ": " . $tanNos[$i] . "<br/>";
-    $tanEmailMessage .= "<br/><hr>";
-  }
+  if (count($tanNos) > 1) {
 
-  // Email message to list all the tans for the user
-  // foreach ($tanNos as $key => $value) {
-  //   foreach ($value as $k => $v) {
-  //     // if ($k == "no")
-  //       $tanEmailMessage .= $k. ":" .$v . "<br/>";
-  //   }
-  //   $tanEmailMessage .= "<br/><hr>";
-  // }
+    for ($i=0; $i < count($tanNos); $i++) { 
+      $tanEmailMessage .= $i . ": " . $tanNos[$i] . "<br/>";
+      $tanEmailMessage .= "<br/><hr>";
+    }
 
-  $password = Generators::randomPasswordGenerate(8);
+    $password = Generators::randomPasswordGenerate(8);
   
-  $mpdf=new mPDF('c','A4','','',32,25,27,25,16,13); 
+    $mpdf=new mPDF('c','A4','','',32,25,27,25,16,13); 
 
-  $mpdf=new mPDF('win-1252','A4','','',20,15,48,25,10,10); 
-  $mpdf->useOnlyCoreFonts = true;
-  $mpdf->SetTitle("Bank of Muenchen TANS");
-  $mpdf->SetAuthor("Bank of Muenchen");
-  $mpdf->SetWatermarkText("Bank of Muenchen");
-  $mpdf->showWatermarkText = true;
-  $mpdf->watermark_font = 'DejaVuSansCondensed';
-  $mpdf->watermarkTextAlpha = 0.1;
-  $mpdf->SetDisplayMode('fullpage');
-  $mpdf->SetProtection(array('print'), $password, "");
-  $mpdf->WriteHTML($tanEmailMessage);
-  $filename = 'TANs_List_'.$emailToUpdate.'.pdf';
+    $mpdf=new mPDF('win-1252','A4','','',20,15,48,25,10,10); 
+    $mpdf->useOnlyCoreFonts = true;
+    $mpdf->SetTitle("Bank of Muenchen TANS");
+    $mpdf->SetAuthor("Bank of Muenchen");
+    $mpdf->SetWatermarkText("Bank of Muenchen");
+    $mpdf->showWatermarkText = true;
+    $mpdf->watermark_font = 'DejaVuSansCondensed';
+    $mpdf->watermarkTextAlpha = 0.1;
+    $mpdf->SetDisplayMode('fullpage');
+    $mpdf->SetProtection(array('print'), $password, "");
+    $mpdf->WriteHTML($tanEmailMessage);
+    $filename = 'TANs_List_'.$emailToUpdate.'.pdf';
 
-  $mpdf->Output($filename,'F');
+    $mpdf->Output($filename,'F');
 
-  $attachment = Swift_Attachment::fromPath($filename);
+    $attachment = Swift_Attachment::fromPath($filename);
 
-
-    $updateData = array (
-        "isActive" => 1
-      );
-
-	$emailToUpdateWithQuotes = "'$emailToUpdate'";
     // Make the user active
-    $db->update ($updateData, "USERS", "emailId = $emailToUpdateWithQuotes");
+    $db->update ($updateData, "USERS", "emailId = '$emailToUpdate'");
 
-    // Update the initial balance
-    $updateData = array (
-      "balance" => $initialAmount
-    );
-
-    $db->update ($updateData, "ACCOUNTS", "userId = $emailToUpdateWithQuotes");
+    $db->update ($updateBalanceData, "ACCOUNTS", "userId = '$emailToUpdate'");
 
     //send TAN email to the user 
-      $message = Swift_Message::newInstance()
+    $message = Swift_Message::newInstance()
 
-                ->setSubject(MAIL_SUBJECT_USER_APPROVED)
+              ->setSubject(MAIL_SUBJECT_USER_APPROVED)
 
-                ->setFrom(array(MAIL_FROM => MAIL_FROM_NAME))
+              ->setFrom(array(MAIL_FROM => MAIL_FROM_NAME))
 
-                ->setTo(array($emailToUpdate))
+              ->setTo(array($emailToUpdate))
 
-                ->attach($attachment)
-				
-				->setBody("Password: ". $password)
+              ->attach($attachment)
+      
+              ->setBody("Password: ". $password)
+
+                ;
+
+    $mailer->send($message);
+
+    unlink($filename);
+
+  }
+  else if (count($tanNos) == 1) {
+
+    // Make the user active
+    $db->update ($updateData, "USERS", "emailId = '$emailToUpdate'");
+
+    $db->update ($updateBalanceData, "ACCOUNTS", "userId = '$emailToUpdate'");
+
+    //send TAN email to the user 
+    $message = Swift_Message::newInstance()
+
+              ->setSubject(MAIL_SUBJECT_USER_APPROVED)
+
+              ->setFrom(array(MAIL_FROM => MAIL_FROM_NAME))
+
+              ->setTo(array($emailToUpdate))
+      
+              ->setBody("SCS PIN: ". $tanNos[0])
   
                 ;
 
-      $mailer->send($message);
-	  
-	  unlink($filename);
+    $mailer->send($message);
+
+  }
 }
 catch (Exception $e){
 	

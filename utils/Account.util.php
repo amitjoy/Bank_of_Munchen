@@ -77,7 +77,7 @@ class AccountUtils {
 		$privateKey = $accountData["ptkey"];
 
 		$privateKeyResource = openssl_get_privatekey($privateKey);
-		openssl_private_decrypt($tan, $decrypted, $privateKeyResource);
+		openssl_private_decrypt(base64_decode($tan), $decrypted, $privateKeyResource);
 
 		if ($decrypted == $accountNo) {
 			return true;
