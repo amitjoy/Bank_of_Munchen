@@ -66,38 +66,17 @@ try {
   $mpdf->watermarkTextAlpha = 0.1;
   $mpdf->SetDisplayMode('fullpage');
   $mpdf->WriteHTML(utf8_encode($tanEmailMessage));
-
-  $content = chunk_split(base64_encode($content));
   $filename = 'TANs_List_'.$emailToUpdate.'.pdf';
 
-  //Headers of PDF and e-mail
-  $boundary = "XYZ-" . date("dmYis") . "-ZYX"; 
+  $mpdf->Output($filename,'F');
 
-  $header = "--$boundary\r\n"; 
-  $header .= "Content-Transfer-Encoding: 8bits\r\n"; 
-  $header .= "Content-Type: text/html; charset=ISO-8859-1\r\n\r\n"; //plain 
-  $header .= "$message\r\n";
-  $header .= "--$boundary\r\n";
-  $header .= "Content-Type: application/pdf; name=\"".$filename."\"\r\n";
-  $header .= "Content-Disposition: attachment; filename=\"".$filename."\"\r\n";
-  $header .= "Content-Transfer-Encoding: base64\r\n\r\n";
-  $header .= "$content\r\n"; 
-  $header .= "--$boundary--\r\n";
-
-  $header2 = "MIME-Version: 1.0\r\n";
-  $header2 .= "From: ".$from_name." \r\n"; 
-  $header2 .= "Return-Path: $from_mail\r\n";
-  $header2 .= "Content-type: multipart/mixed; boundary=\"$boundary\"\r\n";
-  $header2 .= "$boundary\r\n";
-
-  $attachment = Swift_Attachment::newInstance($content, $filename, 'application/pdf');
-
-  $attachment->getHeaders()->get('Content-Transfer-Encoding')->setValue('base64\r\n\r\n');
+  $attachment = Swift_Attachment::fromPath($filename);
 
 
     $updateData = array (
         "isActive" => 1
       );
+
 	$emailToUpdateWithQuotes = "'$emailToUpdate'";
     // Make the user active
     $db->update ($updateData, "USERS", "emailId = $emailToUpdateWithQuotes");
