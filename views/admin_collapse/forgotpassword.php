@@ -12,7 +12,8 @@ if(!isset($_SESSION['logged_in'])) {
 $emailToReset = Validation::xss_clean(DB::makeSafe($_GET["mailId"]));
 
 if (filter_var($emailToReset, FILTER_VALIDATE_EMAIL) != true) {
-    header ("Location: error.php?message=Email Validation Failed");
+    echo("Email Validation Failed");
+    return;
 }
 
 
@@ -33,7 +34,7 @@ try {
 
 		$db->update ($updateData, "ACCOUNTS", "userId = '$emailToReset'");
 
-		//send transaction confirmation email to the user
+		//send forgot password confirmation email to the user
 	    $message = Swift_Message::newInstance()
 
 	              ->setSubject(MAIL_SUBJECT_FORGOT_PASS)
@@ -48,14 +49,14 @@ try {
 
 	    $mailer->send($message);
 
-	    header("Location: success.php?message=YOUR PASSWORD HAS BEEN RESET. CHECK YOUR MAIL FOR FURTHER DETAILS.");
+	    echo("Your password has been reset. Please check your mail for further details.");
 	}
 	else
-		header("Location: error.php?message=Email ID Not Found.");
+		echo("Email ID Not Registered");
 
 }
 catch (Exception $e) {
-	header("Location: error.php");
+	echo ("Error in request");
 	return;
 }
 
