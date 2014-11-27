@@ -5,9 +5,9 @@ require_once '../../includes/mail.inc.php';
 require_once '../../utils/Generators.util.php';
 
 //check to see if they're logged in
-if(!isset($_SESSION['logged_in'])) {
-    header("Location: banklogin.php");
-}
+//if(!isset($_SESSION['logged_in'])) {
+//    header("Location: banklogin.php");
+//}
 
 $emailToReset = Validation::xss_clean(DB::makeSafe($_GET["mailId"]));
 
@@ -23,17 +23,19 @@ try {
 	$db->connect();
 
 	$accData = $db->select("ACCOUNTS", "userId = '$emailToReset'");
-
+	
+	
 	if (is_array($accData) && $accData["userId"] != "") {
 
 		$password = Generators::randomPasswordGenerate (15);
-
+		$passwordwithqoutes="'".hash('sha512', $password)."'";
+		
 		$updateData = array (
-				"password" => hash('sha512', $password);
+				"password" => $passwordwithqoutes
 			);
 
 		$db->update ($updateData, "ACCOUNTS", "userId = '$emailToReset'");
-
+		
 		//send forgot password confirmation email to the user
 	    $message = Swift_Message::newInstance()
 

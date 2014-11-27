@@ -22,7 +22,7 @@ $("#initialiseamount").change(function(){
  var amount = $("#initialiseamount").val();
  var url =$("#initaliseamountsubmit").attr("href");
  var newurl = url+amount;
- console.log(newurl);
+ //console.log(newurl);
  $("#initaliseamountsubmit").attr("href",newurl)
 });
 

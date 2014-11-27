@@ -322,7 +322,19 @@ $token = NoCSRF::generate( 'csrf_token' );
                     </div>
                 </div>
                 <!-- // Form Wizard / Widget Tabs / Double Style END -->
-                
+                <!--Begin Bath fileformat -->
+				<div class="widget widget-heading-simple widget-body-white">
+                    <!-- Widget heading -->
+                    <div class="widget-head">
+                        <h4 class="heading"><i></i>Transaction Batch File Upload Format</h4>
+                    </div>
+                    <!-- // Widget heading END -->
+                    <div class="widget-body">
+                        
+                    </div>
+                </div>
+				
+				<!--End Bath fileformat -->
 				 <!-- Widget -->
                 <div class="widget widget-heading-simple widget-body-gray">
                     <!-- Widget heading -->
