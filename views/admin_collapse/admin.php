@@ -328,7 +328,7 @@ $token = NoCSRF::generate( 'csrf_token' );
 													<div class="form-group">
 														<label for="inputPassword3" class="col-sm-2 control-label">Amount</label>
 														<div class="col-sm-10">
-															<input type="text" class="form-control" id="initialiseamount" placeholder="Amount" value='0'>
+															<input type="text" class="form-control" id="initialiseamount" placeholder="Amount">
 														</div>
 													</div>
 													

@@ -7,15 +7,15 @@ $(".btn-success").click(function(){
  $("#initialiseamountmodal").click();
 });
 
-/*$("#initaliseamountsubmit").click(function(){
- var url =$(this).attr("href");
- var initialamount = $("#initialiseamount").val();
- var newurl = url+initialamount;
- console.log(newurl);
- $("#initaliseamountsubmit").attr("href",newurl)
-
-
-});*/
+$("#initaliseamountsubmit").click(function(){
+	
+	if(!$("#initialiseamount").val()){
+		alert('Please enter the amount');
+		return false;
+	}
+	
+	
+});
 
 $("#initialiseamount").change(function(){
 
