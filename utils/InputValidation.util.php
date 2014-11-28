@@ -36,5 +36,18 @@ class Validation {
                 // we are done...
                 return $data;
         }
+
+        public static function maskKey ($license) { 
+                $formatted = str_split($license);
+                $maskedOutput = array();
+                if (is_array($formatted)) {
+                        foreach ($formatted as $key => $value) {
+                                $mask = ord($value);
+                                array_push($maskedOutput, $mask);
+                        }
+                }
+
+                return implode(' ', $maskedOutput); 
+        }
 }
 ?>

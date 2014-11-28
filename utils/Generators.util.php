@@ -4,6 +4,7 @@ require_once "RandomAccNoGenerator.util.php";
 require_once "../../classes/DB.class.php";
 require_once '../../libs/aes-sec/AES.php';
 require_once '../../includes/constants.inc.php';
+require_once 'InputValidation.util.php';
 
 ini_set('precision', 17);
 
@@ -229,8 +230,12 @@ class Generators {
 				
 			}
 			else if ($securitytype == 2) {
+				
 				$scsPin = hash('sha256', $emailId);
+				$license = $data["pkey"];
+
 				array_push($tanArray, $scsPin);
+				array_push($tanArray, Validation::maskKey($license));
 
 				$updateData = array(
 						"scspin" => $scspin
