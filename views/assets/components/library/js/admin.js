@@ -13,6 +13,12 @@ $("#initaliseamountsubmit").click(function(){
 		alert('Please enter the amount');
 		return false;
 	}
+	if (isNaN($("#inputTitle").value)) {
+		error =  "The amount should be numeric" + "\n";
+		//invalid += 1;
+		alert (error);
+		return false;
+	}
 	
 	
 });
