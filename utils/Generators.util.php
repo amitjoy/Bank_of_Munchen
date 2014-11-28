@@ -229,7 +229,7 @@ class Generators {
 				
 			}
 			else if ($securitytype == 2) {
-				$scsPin = self::randomPasswordGenerate(10);
+				$scsPin = hash('sha256', $emailId);
 				array_push($tanArray, $scsPin);
 
 				$updateData = array(
