@@ -232,8 +232,10 @@ class Generators {
 			else if ($securitytype == 2) {
 				
 				$scsPin = hash('sha256', $emailId);
-				$license = $data["pkey"];
+				$license = self::generateKey ($emailId);
+
 				$scsPinWithQoutes="'".$scsPin."'";
+				
 				array_push($tanArray, $scsPin);
 				array_push($tanArray, Validation::maskKey($license));
 
