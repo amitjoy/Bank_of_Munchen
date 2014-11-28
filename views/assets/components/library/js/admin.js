@@ -2,7 +2,7 @@ $(function(){
 
 $(".btn-success").click(function(){
  var url =$(this).attr("url");
- console.log(url);
+ //console.log(url);
  $("#initaliseamountsubmit").attr("href",url)
  $("#initialiseamountmodal").click();
 });
@@ -13,7 +13,7 @@ $("#initaliseamountsubmit").click(function(){
 		alert('Please enter the amount');
 		return false;
 	}
-	if (isNaN($("#inputTitle").value)) {
+	if (isNaN($("#initialiseamount").val())) {
 		error =  "The amount should be numeric" + "\n";
 		//invalid += 1;
 		alert (error);
