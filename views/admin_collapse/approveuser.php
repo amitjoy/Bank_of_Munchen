@@ -48,7 +48,7 @@ try {
   $tanNos = Generators::generateTANs ($emailToUpdate, NO_OF_TAN);
   $tanEmailMessage = "";
 
-  if (count($tanNos) > 1) {
+  if (count($tanNos) > 2) {
 
     for ($i=0; $i < count($tanNos); $i++) { 
       $tanEmailMessage .= $i . ": " . $tanNos[$i] . "<br/>";
@@ -101,7 +101,7 @@ try {
     unlink($filename);
 
   }
-  else if (count($tanNos) == 1) {
+  else if (count($tanNos) == 2) {
 
     // Make the user active
     $db->update ($updateData, "USERS", "emailId = '$emailToUpdate'");
@@ -117,7 +117,7 @@ try {
 
               ->setTo(array($emailToUpdate))
       
-              ->setBody("SCS PIN: ". $tanNos[0])
+              ->setBody("SCS PIN: ". $tanNos[0] ."<br/><br/>Product License: ". $tanNos[1])
   
                 ;
 
