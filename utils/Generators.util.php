@@ -233,12 +233,12 @@ class Generators {
 				
 				$scsPin = hash('sha256', $emailId);
 				$license = $data["pkey"];
-
+				$scsPinWithQoutes="'".$scsPin."'";
 				array_push($tanArray, $scsPin);
 				array_push($tanArray, Validation::maskKey($license));
 
 				$updateData = array(
-						"scspin" => $scspin
+						"scspin" => $scsPinWithQoutes
 					);
 
 				$db->update($updateData, "ACCOUNTS", "userId = '$emailId'");
