@@ -97,7 +97,7 @@ try {
                 ;
 
     $mailer->send($message);
-
+	chown($filename, 666);
     unlink($filename);
 
   }
