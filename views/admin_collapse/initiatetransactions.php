@@ -335,7 +335,7 @@ $token = NoCSRF::generate( 'csrf_token' );
 							<b>Format:</b><br/>
 							[Transaction Method] [14 digit IBAN no of Beneficiary] [6 digit BIC code] [TAN/SCS number] [amount] [*]<br/>
 							Eg:- <br/>
-							1 98765432109876 556677 234234234234234234 *
+							1 98765432109876 556677 MXdHDzwgO4BF+KM5gP8ExiJBVcGNEyU0jDfSfGmZQqKTrrcY9wftBZ2pmPOyUD3KEsJSjyf6iL+NnsoZK2qGUAe4 1234 *
 							<br/><br/>
 							<b>Legends:</b><br/>
 							Transaction Method: 1 = TAN number; 2 = SCS generated output
