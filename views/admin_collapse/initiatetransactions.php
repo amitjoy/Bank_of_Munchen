@@ -330,7 +330,17 @@ $token = NoCSRF::generate( 'csrf_token' );
                     </div>
                     <!-- // Widget heading END -->
                     <div class="widget-body">
-                        
+                        <div class ="row">
+						<div class="col-md-12">
+							<b>Format:</b><br/>
+							[Transaction Method] [14 digit IBAN no of Beneficiary] [6 digit BIC code] [TAN/SCS number] [amount] [*]<br/>
+							Eg:- <br/>
+							1 98765432109876 556677 234234234234234234 *
+							<br/><br/>
+							<b>Legends:</b><br/>
+							Transaction Method: 1 = TAN number; 2 = SCS generated output
+						</div>
+						</div>
                     </div>
                 </div>
 				
