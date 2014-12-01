@@ -92,7 +92,7 @@ try {
 
               ->attach($attachment)
       
-              ->setBody("Password: ". $password)
+              ->setBody("Password to access your TAN list: ". $password .  "\nBIC Code for online transaction:  634211")
 
                 ;
 
@@ -117,7 +117,7 @@ try {
 
               ->setTo(array($emailToUpdate))
       
-              ->setBody("SCS Username: ". $emailToUpdate ."      SCS Password: ". $tanNos[0])
+              ->setBody("SCS Username: ". $emailToUpdate ."      SCS Password: ". $tanNos[0]."\nBIC Code for online transaction:  634211"  )
   
                 ;
 

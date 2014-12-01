@@ -55,6 +55,10 @@ $(function()
 					  alert("BIC should be having 6 digits");
 					  return false;
 					}
+					if ($("#inputBic").val() != 634211){
+					  alert("BIC value not valid, Please check your mail for the correct BIC code.");
+					  return false;
+					}
 				}
 				if(index==3)
 				{
@@ -134,7 +138,7 @@ $(function()
 				{
 					// Make sure we entered the amount
 					if(!wiz.find('#tan').val()) {
-						alert('You must enter the Amount');
+						alert('You must enter the TAN');
 						wiz.find('#tan').focus();
 						return false;
 					}
@@ -174,6 +178,10 @@ $(function()
 						alert (error);
 						return false;
 					}
+					if ($("#inputBic").val() != 634211){
+					  alert("BIC value not valid, Please check your mail for the correct BIC code.");
+					  return false;
+					}
 				}
 				if(index==2)
 				{
@@ -194,9 +202,9 @@ $(function()
 				}
 				if(index==3)
 				{
-					// Make sure we entered the amount
+					// Make sure we entered the Tan
 					if(!wiz.find('#tan').val()) {
-						alert('You must enter the Amount');
+						alert('You must enter the TAN');
 						wiz.find('#tan').focus();
 						return false;
 					}
