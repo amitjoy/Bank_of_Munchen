@@ -14,11 +14,12 @@ $emailId = Validation::xss_clean(DB::makeSafe($_POST["emailId"]));
 $amount = Validation::xss_clean(DB::makeSafe($_POST["amount"]));
 $iban = Validation::xss_clean(DB::makeSafe($_POST["iban"]));
 $bic = Validation::xss_clean(DB::makeSafe($_POST["bic"]));
-$tan = Validation::xss_clean(DB::makeSafe($_POST["tan"]));
+$tan = DB::makeSafe($_POST["tan"]);
 $description = Validation::xss_clean(DB::makeSafe($_POST["description"]));
 $isActive = ($amount > 10000) ? 0 : 1;
 $password = Validation::xss_clean(DB::makeSafe($_POST["password"]));
 $error = "";
+
 
 if ($function == "transaction") {
 
@@ -81,12 +82,12 @@ if ($function == "transaction") {
 			"receiverIban" => $iban,
 			"bic" => $bic,
 			"amount" => $amount,
-			"description" => $description,
+			"description" => "'$description'",
 			"userId" => "'$emailId'",
 			"date" => "'".date('Y-m-d H:i:s')."'",
 			"closingBalance" => $balance,
 			"isActive" => $isActive,
-			"type" => "DEBIT"
+			"type" => "'DEBIT'"
 		);
 	// Check if the user has a transaction that is not yet approved
 	$noOfUnapprovedTransactionsArray = $db->select("TRANSACTIONS", "userId = '$userId' AND isActive = 0");
@@ -136,12 +137,12 @@ if ($function == "transaction") {
 									"receiverIban" => $iban,
 									"bic" => $bic,
 									"amount" => $amount,
-									"description" => $description,
+									"description" => "'$description'",
 									"userId" => "'$emailTargetUser'",
 									"date" => "'".date('Y-m-d H:i:s')."'",
 									"closingBalance" => $balanceOfTheTargetUser,
 									"isActive" => $isActive,
-									"type" => "CREDIT"
+									"type" => "'CREDIT'"
 								);
 
 						// Insert the credit data in the TRANSACTION TABLE
@@ -164,8 +165,9 @@ if ($function == "transaction") {
 						$data = array (
 								"isActive" => 0
 							);
-
+						
 						$db->update ($data, "TANS", "no = '$tan'");
+			
 					}
 					else {
 						echo "Invalid Recepient";
@@ -209,7 +211,7 @@ if ($function == "transaction") {
 				    $data = array (
 							"isActive" => 0
 						);
-
+					
 					$db->update ($data, "TANS", "no = '$tan'");
 
 				echo "Transaction Sent for Approval";

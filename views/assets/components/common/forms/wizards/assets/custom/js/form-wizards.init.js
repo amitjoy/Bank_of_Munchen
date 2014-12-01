@@ -82,7 +82,7 @@ $(function()
 						return false;
 					}
 					//TAN is non-numeric or not 10 digits
-					if (isNaN(document.getElementById("tan").value)) {
+					/*if (isNaN(document.getElementById("tan").value)) {
 						error =  "TAN should be in numeric" + "\n";
 						//invalid += 1;
 						alert (error);
@@ -91,7 +91,7 @@ $(function()
 					if ($("#tan").val().length != 15){
 					  alert("TAN should be  of 15 digits");
 					  return false
-					}
+					}*/
 					$("#confirmiban").empty();
 					$("#confirmbic").empty();
 					$("#confirmamount").empty();
@@ -272,9 +272,7 @@ $(function()
 		});
 	});
 	
-	$("#modalForm").submit(function(e) {
-	  e.preventDefault();
-	});
+	
 	
 	$( "#tranpassword" ).click(function() {
 
@@ -282,7 +280,7 @@ $(function()
 			var amount = $("#amount").val();
 			var iban = $("#inputTitle").val();
 			var bic = $("#inputBic").val();
-			var tan = $("#tan").val();
+			var tan = encodeURIComponent($("#tan").val());
 			var desc = $("#description").val(); 
 			var tranPasswordtext =$("#tranPasswordtext").val();
 			var tranPasswordhash = CryptoJS.SHA512(tranPasswordtext);
@@ -293,10 +291,10 @@ $(function()
 				data: "function=transaction&iban="+iban+"&bic="+bic+"&tan="+tan+"&amount="+amount+"&emailId="+emailId+"&password="+tranPasswordhash+"&description="+desc,
 				success: function(data){
 							$("#closepasswordmodal").click();
-							//console.log("Success");
+							//alert("Success");
 							//console.log(data);
 							alert(data);
-							location.reload(true);
+							//location.reload(true);
 							//console.log("getAjax.php?function=transaction&iban="+iban+"&bic="+bic+"&tan="+tan+"&amount="+amount+"&emailId="+emailId+"&password="+tranPasswordhash);
 						},
 				error: function(){
@@ -318,6 +316,9 @@ $(function()
 			$("#confirmbic").empty();
 			$("#confirmamount").empty();
 			
+		});
+		$("#modalForm").submit(function(e) {
+		  e.preventDefault();
 		});
 	
 });

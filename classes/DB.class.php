@@ -72,7 +72,7 @@ class DB {
 	public function update($data, $table, $where) {
 		foreach ($data as $column => $value) {
 			$sql = "UPDATE $table SET $column = $value WHERE $where";
-
+			
 			@mysql_query($sql) or die(@mysql_error());
 		}
 		return true;
@@ -95,7 +95,7 @@ class DB {
 		}
 		
 		$sql = "INSERT INTO $table ($columns) values ($values)";
-				
+		
 		@mysql_query($sql) or die(@mysql_error());
 		
 		//return the ID of the user in the database.
