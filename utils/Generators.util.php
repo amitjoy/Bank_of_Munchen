@@ -100,7 +100,7 @@ class Generators {
 		return $enc;
 	}
 	
-	private static function generateKey ($emailId) {
+	private static function generateKey_old ($emailId) {
 	
 		$db = DB::getInstance();
 		$db->connect();
@@ -130,10 +130,46 @@ class Generators {
 
 		//openssl_pkey_free($privateKeyResource);
 		//openssl_pkey_free($publicKeyResource);
-
+		openssl_pkey_free($privateKeyResource);
 		return $publicKey;
 		
 	}
+	
+	private static function generateKey ($emailId) {
+	
+		//$db = DB::getInstance();
+		//$db->connect();
+
+		//open the private key file
+		$fprv = fopen(PRIVATE_KEY_LOC, "r");   //please change the path of the privateKey file here
+		$privateKey = fread($fprv, 512);
+		fclose($fprv);
+		
+		$fpub = fopen(PUBLIC_KEY_LOC, "r");
+		$publicKey = fread($fpub, 512);
+		fclose($fpub);
+		
+		//chown(PRIVATE_KEY_LOC, 666);
+		//chown(PUBLIC_KEY_LOC, 666);
+		
+		$res_prv = openssl_get_privatekey($privateKey);
+		$res_pub = openssl_get_publickey($publicKey);
+		
+		//$data = array(
+			//	"pkey" => "'". $publicKey ."'",
+				//"ptkey" => "'". $privateKey ."'"
+			//);
+		
+		//$db->update ($data, "ACCOUNTS", "userId = '$emailId'");
+
+		//openssl_pkey_free($privateKeyResource);
+		//openssl_pkey_free($publicKeyResource);
+		
+		return $res_pub;
+		
+	}
+	
+	
 	
 	private static function generateTAN ($key) {
 	
