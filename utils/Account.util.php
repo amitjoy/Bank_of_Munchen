@@ -1,6 +1,7 @@
 <?php
 require_once "../../classes/DB.class.php";
 require_once '../../libs/aes-sec/AES.php';
+require_once '../../includes/constants.inc.php';
 
 class AccountUtils {
 	// Furnction used to check balance of the
@@ -73,17 +74,21 @@ class AccountUtils {
 
 		$accountData = $db->select("ACCOUNTS", "userId = '$emailId'");
 		$accountNo = $accountData["accountNo"];
-		$publicKey = $accountData["pkey"];
-		$privateKey = $accountData["ptkey"];
 
-		$privateKeyResource = openssl_get_privatekey($privateKey);
-		openssl_private_decrypt(base64_decode($tan), $decrypted, $privateKeyResource);
+		
+		$fprv = fopen(PRIVATE_KEY_LOC, "r");   //please change the path of the privateKey file here
+		$privateKey = fread($fprv, 512);
+		fclose($fprv);
+		
+		$res_prv = openssl_get_privatekey($privateKey);
 
+		openssl_private_decrypt(base64_decode($tanNo), $decrypted, $res_prv);
+		
 		if ($decrypted == $accountNo) {
 			return true;
 		}
-
-		return false;
+		else
+			return false;
 
 
 		

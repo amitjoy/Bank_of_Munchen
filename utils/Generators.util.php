@@ -258,7 +258,7 @@ class Generators {
 					$insertData = array(
 							"no" => "'". $tanNo ."'",
 							"userId" => "'". $emailId ."'",
-							"isActive" => 0
+							"isActive" => 1
 						);
 						
 					$db->insert($insertData, "TANS");
