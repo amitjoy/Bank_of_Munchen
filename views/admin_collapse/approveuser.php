@@ -117,7 +117,7 @@ try {
 
               ->setTo(array($emailToUpdate))
       
-              ->setBody("SCS Username: ". $emailToUpdate ."      SCS Password: ". $tanNos[0]."\nBIC Code for online transaction:  634211"  )
+              ->setBody("SCS Username: ". $emailToUpdate ."\nSCS Password: ". $tanNos[0]."\nBIC Code for online transaction:  634211"  )
   
                 ;
 
