@@ -74,7 +74,7 @@ $img = new Securimage();
 if (!empty($_GET['namespace'])) $img->setNamespace($_GET['namespace']);
 
 $img->image_signature = 'Bank of Muenchen';
-$img->signature_color = new Securimage_Color('#800000');
+$img->signature_color = new Securimage_Color('#0066FF');
 $img->show();  // outputs the image and content headers to the browser
 // alternate use:
 // $img->show('/path/to/background_image.jpg');
