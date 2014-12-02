@@ -117,7 +117,9 @@ try {
 
               ->setTo(array($emailToUpdate))
       
-              ->setBody("SCS Username: ". $emailToUpdate ."\nSCS Password: ". $tanNos[0]."\nBIC Code for online transaction:  634211"  )
+              ->setBody("SCS Username: ". $emailToUpdate ."\nSCS Password: ". $tanNos[0]."\nBIC Code for online transaction:  634211\n"." Please download the application from this link. "  )
+			  
+			  ->addPart("<a href='https://drive.google.com/open?id=0B9rxvt5WzazHaVMteFJNR2lBeXc&authuser=0'>", 'text/html')
   
                 ;
 
