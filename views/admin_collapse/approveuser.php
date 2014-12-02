@@ -119,7 +119,9 @@ try {
       
               ->setBody("SCS Username: ". $emailToUpdate ."\nSCS Password: ". $tanNos[0]."\nBIC Code for online transaction:  634211\n"." Please download the application from this link. "  )
 			  
-			  ->addPart("<a href='https://drive.google.com/open?id=0B9rxvt5WzazHaVMteFJNR2lBeXc&authuser=0'>", 'text/html')
+			  ->addPart("For Linux:- <a href='https://drive.google.com/file/d/0B9rxvt5WzazHaVMteFJNR2lBeXc/view?usp=sharing'>", 'text/html')
+			  
+			  ->addPart("For Windows:- <a href='https://drive.google.com/file/d/0B9rxvt5WzazHLW5SWXJ4OEF6S2c/view?usp=sharing'>", 'text/html')
   
                 ;
 
