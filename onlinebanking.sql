@@ -2,8 +2,8 @@
 -- version 4.2.7.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Nov 27, 2014 at 12:36 AM
+-- Host: 127.0.0.1
+-- Generation Time: Dec 02, 2014 at 09:06 AM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -32,11 +32,16 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `userId` text NOT NULL,
   `accountNo` text NOT NULL,
   `password` text NOT NULL,
-  `pkey` text NOT NULL,
-  `ptkey` text NOT NULL,
   `scspin` text NOT NULL,
   `securitytype` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`id`, `balance`, `userId`, `accountNo`, `password`, `scspin`, `securitytype`) VALUES
+(1, '1000000', 'bankofmuenchen@gmail.com', '96131769688253', '3a3e165f4dfe0104cfe81240d56651e032923b8441491daf2cbbcdc3f652acb48478ded894a3f5c133971fca440cb72618d50152d6be21602455a8f428c63a8d', '', 1);
 
 -- --------------------------------------------------------
 
@@ -82,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `description` text NOT NULL,
   `closingBalance` text NOT NULL,
   `userId` text NOT NULL,
-  `type` varchar(10) NOT NULL,
+  `type` text NOT NULL,
   `isActive` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -102,7 +107,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   `middleName` text,
   `lastName` text NOT NULL,
   `emailId` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `isAdmin`, `isActive`, `createdDate`, `mobileNo`, `firstName`, `middleName`, `lastName`, `emailId`) VALUES
+(1, 1, 1, '2014-12-02 09:05:41', 12345678901, 'Admin', '', 'A', 'bankofmuenchen@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -146,7 +158,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-MODIFY `id` int(15) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(15) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `addresses`
 --
@@ -166,7 +178,7 @@ MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
